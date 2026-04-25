@@ -3,105 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ValuPro — Tim Lapangan</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
-/* ============================================
-   IOS 26 DESIGN SYSTEM
-============================================ */
+/* =========================================
+   FRESH NATIVE TOKENS - Vibrant & Clean
+========================================= */
 :root {
-  /* iOS 26 Color Palette */
-  --ios-bg: #F2F2F7;
-  --ios-surface: #FFFFFF;
-  --ios-surface-secondary: #F9F9FB;
-  --ios-input: rgba(118,118,128,0.12);
-  --ios-separator: rgba(60,60,67,0.12);
-  --ios-separator-opaque: #C6C6C8;
+  /* Backgrounds - Soft Warm Gray */
+  --bg-app: #F8F9FB;
+  --bg-surface: #FFFFFF;
+  --bg-surface-raised: #FFFFFF;
+  --bg-input: #F1F3F6;
+  --bg-overlay: rgba(15, 23, 42, 0.5);
+  --bg-glass: rgba(255, 255, 255, 0.82);
   
-  --ios-text-primary: #000000;
-  --ios-text-secondary: #3C3C43;
-  --ios-text-tertiary: #8E8E93;
-  --ios-text-quaternary: #AEAEB2;
-  --ios-text-white: #FFFFFF;
+  /* Text - Deep Contrast */
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-tertiary: #64748B;
+  --text-quaternary: #94A3B8;
+  --text-inverse: #FFFFFF;
+  --text-on-accent: #FFFFFF;
   
-  /* Accent - iOS Blue with warmth */
-  --ios-accent: #007AFF;
-  --ios-accent-light: #5AC8FA;
-  --ios-accent-bg: rgba(0,122,255,0.1);
+  /* Brand - Fresh Teal-Blue Gradient */
+  --brand-primary: #0891B2;
+  --brand-primary-light: #06B6D4;
+  --brand-primary-dark: #0E7490;
+  --brand-gradient: linear-gradient(135deg, #0891B2 0%, #06B6D4 50%, #22D3EE 100%);
+  --brand-gradient-warm: linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #2DD4BF 100%);
   
-  /* Gold accent for premium feel */
-  --gold-primary: #B8860B;
-  --gold-light: #DAA520;
-  --gold-glow: rgba(184,134,11,0.15);
+  /* Accent Colors - Coral & Mint */
+  --accent: #F97316;
+  --accent-soft: rgba(249, 115, 22, 0.12);
+  --mint: #10B981;
+  --mint-soft: rgba(16, 185, 129, 0.12);
   
   /* Semantic */
-  --ios-green: #34C759;
-  --ios-green-bg: rgba(52,199,89,0.12);
-  --ios-red: #FF3B30;
-  --ios-red-bg: rgba(255,59,48,0.1);
-  --ios-orange: #FF9500;
-  --ios-teal: #5AC8FA;
+  --color-success: #10B981;
+  --color-success-bg: #ECFDF5;
+  --color-success-text: #047857;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #FFFBEB;
+  --color-danger: #EF4444;
+  --color-danger-bg: #FEF2F2;
+  --color-info: #0891B2;
+  --color-info-bg: #ECFEFF;
   
-  /* Shadows - iOS style */
-  --ios-shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-  --ios-shadow-md: 0 4px 14px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
-  --ios-shadow-lg: 0 10px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-  --ios-shadow-float: 0 12px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08);
+  /* Borders */
+  --border-light: rgba(148, 163, 184, 0.12);
+  --border-medium: rgba(148, 163, 184, 0.25);
+  --border-focus: #06B6D4;
   
-  /* Radius - iOS 26 uses larger radius */
-  --ios-r-xs: 8px;
-  --ios-r-sm: 12px;
-  --ios-r-md: 16px;
-  --ios-r-lg: 20px;
-  --ios-r-xl: 24px;
-  --ios-r-2xl: 28px;
-  --ios-r-full: 9999px;
+  /* Shadows - Crisp */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --shadow-glow: 0 0 0 4px rgba(6,182,212,0.18);
+  
+  /* Radius */
+  --r-xs: 12px;
+  --r-sm: 16px;
+  --r-md: 20px;
+  --r-lg: 24px;
+  --r-xl: 28px;
+  --r-2xl: 32px;
+  --r-full: 9999px;
   
   /* Safe Areas */
-  --safe-top: env(safe-area-inset-top, 20px);
+  --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* =========================================
+   DARK MODE - OLED Friendly
+========================================= */
 [data-theme="dark"] {
-  --ios-bg: #000000;
-  --ios-surface: #1C1C1E;
-  --ios-surface-secondary: #2C2C2E;
-  --ios-input: rgba(118,118,128,0.24);
-  --ios-separator: rgba(84,84,88,0.65);
-  --ios-separator-opaque: #38383A;
+  --bg-app: #09090B;
+  --bg-surface: #111113;
+  --bg-surface-raised: #1A1A1D;
+  --bg-input: #1E1E22;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-glass: rgba(17, 17, 19, 0.85);
   
-  --ios-text-primary: #FFFFFF;
-  --ios-text-secondary: #EBEBF5;
-  --ios-text-tertiary: #EBEBF599;
-  --ios-text-quaternary: #EBEBF54D;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+  --text-quaternary: #64748B;
+  --text-inverse: #09090B;
   
-  --ios-accent: #0A84FF;
-  --ios-accent-light: #64D2FF;
-  --ios-accent-bg: rgba(10,132,255,0.2);
+  --brand-primary: #22D3EE;
+  --brand-primary-light: #67E8F9;
+  --brand-primary-dark: #06B6D4;
+  --brand-gradient: linear-gradient(135deg, #06B6D4 0%, #22D3EE 50%, #67E8F9 100%);
+  --brand-gradient-warm: linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%);
   
-  --gold-primary: #E5B932;
-  --gold-light: #F0D060;
-  --gold-glow: rgba(229,185,50,0.2);
+  --accent: #FB923C;
+  --accent-soft: rgba(251,146,60,0.18);
+  --mint: #34D399;
+  --mint-soft: rgba(52,211,153,0.15);
   
-  --ios-green: #30D158;
-  --ios-green-bg: rgba(48,209,88,0.18);
-  --ios-red: #FF453A;
-  --ios-red-bg: rgba(255,69,58,0.18);
-  --ios-orange: #FF9F0A;
-  --ios-teal: #64D2FF;
+  --color-success: #34D399;
+  --color-success-bg: #052E16;
+  --color-success-text: #6EE7B7;
+  --color-warning: #FBBF24;
+  --color-warning-bg: #451A03;
+  --color-danger: #F87171;
+  --color-danger-bg: #450A0A;
+  --color-info: #22D3EE;
+  --color-info-bg: #083344;
   
-  --ios-shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --ios-shadow-md: 0 4px 14px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.25);
-  --ios-shadow-lg: 0 10px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+  --border-light: rgba(148, 163, 184, 0.1);
+  --border-medium: rgba(148, 163, 184, 0.2);
+  --border-focus: #22D3EE;
+  
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.45);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.55);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.65);
+  --shadow-glow: 0 0 0 4px rgba(34,211,238,0.22);
 }
 
-/* ============================================
-   BASE STYLES
-============================================ */
+/* =========================================
+   BASE RESET - Fullscreen Ready
+========================================= */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -113,2391 +148,2354 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font-family: -apple-system, 'Inter', 'SF Pro Display', BlinkMacSystemFont, sans-serif;
-  background: var(--ios-bg);
-  color: var(--ios-text-primary);
-  line-height: 1.47;
-  min-height: 100vh;
-  min-height: 100dvh;
-  overflow-x: hidden;
-  transition: background-color 0.35s ease, color 0.35s ease;
-}
-
-/* Screen System */
-.screen {
-  display: none !important;
-  flex-direction: column;
-  height: 100dvh;
-  height: 100vh;
-  position: fixed;
-  inset: 0;
+  height: 100%;
   overflow: hidden;
 }
 
-.screen.active {
-  display: flex !important;
-  animation: iosFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  transition: background-color 0.35s ease, color 0.35s ease;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  line-height: 1.5;
+  position: fixed;
+  width: 100%;
 }
 
-@keyframes iosFadeIn {
-  from { opacity: 0; transform: scale(0.97); }
+/* Screen Management - Full Viewport */
+.screen {
+  display: none !important;
+  flex-direction: column;
+  height: 100%;
+  height: 100dvh;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.screen.active {
+  display: flex !important;
+  animation: nativeScreenIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes nativeScreenIn {
+  from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes iosSlideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes iosPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }
 
-@keyframes iosShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* ============================================
-   LOGIN SCREEN - IOS STYLE
-============================================ */
-#loginScreen {
-  background: linear-gradient(180deg, #1C1C1E 0%, #0D0D0F 100%);
+/* =========================================
+   LOGIN SCREEN
+========================================= */
+#screen-login {
+  background: linear-gradient(145deg, #0F766E 0%, #0D9488 40%, #14B8A6 70%, #2DD4BF 100%);
   justify-content: center;
   align-items: center;
   padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+#screen-login::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+  border-radius: 50%;
+  top: -200px;
+  right: -120px;
+}
+#screen-login::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%);
+  border-radius: 50%;
+  bottom: -120px;
+  left: -100px;
 }
 
-.login-wrapper {
+.login-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-2xl);
+  padding: 38px 28px;
   width: 100%;
-  max-width: 340px;
+  max-width: 380px;
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255,255,255,0.1);
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.login-card-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-2xl);
-  padding: 32px 28px;
-  box-shadow: var(--ios-shadow-lg);
-}
-
-.brand-row {
+.logo-area {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
-  margin-bottom: 8px;
+  margin-bottom: 32px;
 }
 
-.brand-icon-ios {
-  width: 52px;
-  height: 52px;
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  border-radius: var(--ios-r-md);
+.logo-mark {
+  width: 56px;
+  height: 56px;
+  background: var(--brand-gradient-warm);
+  border-radius: var(--r-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px var(--gold-glow);
-}
-
-.brand-icon-ios span {
   font-size: 22px;
   font-weight: 800;
   color: white;
-  font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 24px rgba(13,148,136,0.4);
 }
 
-.brand-name-ios {
+.logo-text {
   font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--ios-text-primary);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
 }
 
-.login-subtitle-ios {
+.login-subtitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
   text-align: center;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ios-text-tertiary);
   margin-bottom: 28px;
 }
 
-.input-group-ios {
-  margin-bottom: 16px;
-}
+.form-group { margin-bottom: 18px; }
 
-.label-ios {
+.form-label {
   display: block;
   font-size: 13px;
-  font-weight: 600;
-  color: var(--ios-text-secondary);
+  font-weight: 700;
+  color: var(--text-secondary);
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 11px;
 }
 
-.textfield-ios {
+.input-field {
   width: 100%;
-  padding: 10px;
-  background: var(--ios-input);
-  border: none;
-  border-radius: var(--ios-r-md);
+  padding: 16px 18px;
+  background: var(--bg-input);
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
   font-family: inherit;
-  font-size: 12px;
-  color: var(--ios-text-primary);
+  font-size: 16px;
+  color: var(--text-primary);
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+}
+.input-field::placeholder { color: var(--text-quaternary); }
+.input-field:focus {
+  border-color: var(--brand-primary);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-glow);
 }
 
-.textfield-ios::placeholder {
-  color: var(--ios-text-quaternary);
-}
-
-.textfield-ios:focus {
-  background: rgba(118,118,128,0.18);
-  box-shadow: 0 0 0 4px var(--ios-accent-bg);
-}
-
-.btn-ios-primary {
+.btn-login {
   width: 100%;
-  padding: 17px;
-  background: var(--ios-accent);
+  padding: 18px;
+  background: var(--brand-gradient-warm);
   color: white;
   border: none;
-  border-radius: var(--ios-r-md);
+  border-radius: var(--r-md);
   font-family: inherit;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 800;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 24px rgba(13,148,136,0.35);
+  letter-spacing: 0.3px;
+}
+.btn-login:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(13,148,136,0.45);
+}
+.btn-login:active:not(:disabled) { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================================
+   HOME SCREEN - Full Scroll Container
+========================================= */
+#screen-home {
+  background: var(--bg-app);
+}
+
+.home-header {
+  background: linear-gradient(145deg, #0891B2 0%, #06B6D4 50%, #22D3EE 100%);
+  padding: calc(var(--safe-top) + 20px) 20px 52px;
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
 }
-
-.btn-ios-primary:active:not(:disabled) {
-  transform: scale(0.98);
-  opacity: 0.9;
-}
-
-.btn-ios-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-ios-gold {
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  color: #1a1a1a;
-  font-weight: 700;
-}
-
-/* ============================================
-   HOME SCREEN - IOS 26 STYLE
-============================================ */
-#homeScreen {
-  background: var(--ios-bg);
-}
-
-.home-header-ios {
-  background: linear-gradient(170deg, #1C1C1E 0%, #2C2C2E 50%, #1C1C1E 100%);
-  padding-top: calc(var(--safe-top) + 16px);
-  padding-bottom: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.home-header-ios::before {
+.home-header::before {
   content: '';
   position: absolute;
-  top: -40%;
-  right: -20%;
-  width: 70%;
-  height: 80%;
-  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
-  pointer-events: none;
+  inset: 0;
+  background: radial-gradient(ellipse at 85% 0%, rgba(255,255,255,0.18) 0%, transparent 55%);
 }
 
-.header-bar {
+.header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  margin-bottom: 24px;
   position: relative;
   z-index: 1;
+  margin-bottom: 26px;
 }
 
-.user-avatar-stack {
+.user-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.avatar-ring-ios {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  padding: 2.5px;
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--r-full);
+  padding: 3px;
+  background: rgba(255,255,255,0.25);
 }
-
-.avatar-inner-ios {
+.avatar-inner {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: var(--ios-surface-secondary);
+  border-radius: var(--r-full);
+  background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--gold-primary);
-}
-
-.user-meta h1 {
-  font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 17px;
   color: white;
-  line-height: 1.2;
 }
 
-.user-meta p {
-  font-size: 13px;
-  color: rgba(255,255,255,0.55);
-  font-weight: 400;
+.user-info-name {
+  font-weight: 800;
+  font-size: 17px;
+  color: white;
+}
+.user-info-role {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
   margin-top: 2px;
 }
 
-.theme-toggle-ios {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: none;
+.theme-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-full);
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.8);
+  color: white;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
+.theme-btn:active { transform: scale(0.92); }
 
-.theme-toggle-ios:active {
-  transform: scale(0.92);
-  background: rgba(255,255,255,0.18);
-}
-
-.stats-row-ios {
+.stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  padding: 0 20px;
   position: relative;
   z-index: 1;
 }
 
-.stat-card-ios {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--ios-r-lg);
+.stat-item {
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--r-lg);
   padding: 16px 12px;
   text-align: center;
 }
-
-.stat-value-ios {
+.stat-value {
   font-size: 28px;
-  font-weight: 700;
-  color: var(--gold-light);
+  font-weight: 800;
+  color: white;
   line-height: 1;
-  font-feature-settings: 'tnum';
 }
-
-.stat-label-ios {
+.stat-label {
   font-size: 10px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.45);
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-top: 6px;
 }
 
-/* Main Content Scrollable */
-.main-scroll-ios {
+/* Main Scroll Area - Takes remaining space */
+.main-scroll-wrapper {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 16px calc(100px + var(--safe-bottom));
-  margin-top: -20px;
-  position: relative;
-  z-index: 2;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(80px + var(--safe-bottom));
 }
 
-.section-header-ios {
+.main-scroll {
+  padding: 0 18px;
+  margin-top: -36px;
+  position: relative;
+  z-index: 2;
+}
+
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 4px 14px;
+  margin-bottom: 16px;
+  padding: 0 2px;
 }
-
-.section-title-ios {
-  font-size: 22px;
+.section-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+.section-action {
+  font-size: 14px;
   font-weight: 700;
-  color: var(--ios-text-primary);
-  letter-spacing: -0.4px;
-}
-
-.section-link-ios {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ios-accent);
+  color: var(--brand-primary);
   cursor: pointer;
 }
 
-/* Task Cards - iOS Style */
-.task-list-ios {
+.task-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   padding-bottom: 20px;
 }
 
-.task-card-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-xl);
+.task-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-xl);
   overflow: hidden;
-  box-shadow: var(--ios-shadow-sm);
-  border: 0.5px solid var(--ios-separator);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: iosFadeIn 0.4s ease backwards;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: fadeUp 0.5s ease backwards;
 }
+.task-card:active { transform: scale(0.98); }
 
-.task-card-ios:active {
-  transform: scale(0.985);
-}
-
-.card-body-ios {
+.card-body {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 16px;
+  padding: 18px;
 }
 
-.status-dot-ios {
+.status-dot {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: var(--r-full);
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: 6px;
   position: relative;
 }
-
-.status-dot-ios::after {
+.status-dot::after {
   content: '';
   position: absolute;
-  inset: -3px;
-  border-radius: 50%;
+  inset: -4px;
+  border-radius: var(--r-full);
   background: inherit;
   opacity: 0.3;
-  animation: iosPulse 2.5s infinite;
+  animation: gentlePulse 2.5s ease-in-out infinite;
 }
+.dot-new { background: var(--accent); }
+.dot-transit { background: var(--color-info); }
+.dot-active { background: var(--mint); }
+.dot-done { background: var(--text-quaternary); }
 
-.dot-new { background: var(--gold-primary); }
-.dot-transit { background: var(--ios-blue, var(--ios-accent)); }
-.dot-active { background: var(--ios-green); }
-.dot-done { background: var(--ios-text-quaternary); }
-
-.card-info-ios {
-  flex: 1;
-  min-width: 0;
-}
-
-.order-tag-ios {
+.card-content { flex: 1; min-width: 0; }
+.card-order-id {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--gold-primary);
-  letter-spacing: 0.5px;
-  margin-bottom: 3px;
+  font-weight: 800;
+  color: var(--brand-primary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
-
-.client-name-ios {
+.card-title {
   font-size: 16px;
-  font-weight: 600;
-  color: var(--ios-text-primary);
-  line-height: 1.25;
-  margin-bottom: 3px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 5px;
 }
-
-.address-ios {
+.card-address {
   font-size: 13px;
-  color: var(--ios-text-tertiary);
-  line-height: 1.35;
+  color: var(--text-secondary);
+  line-height: 1.45;
   display: flex;
-  gap: 4px;
+  gap: 5px;
   align-items: flex-start;
 }
-
-.meta-row-ios {
+.card-meta {
   display: flex;
-  gap: 14px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
-
-.meta-item-ios {
+.meta-tag {
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: var(--ios-text-tertiary);
-  font-weight: 500;
+  color: var(--text-tertiary);
+  font-weight: 600;
 }
 
-.status-badge-ios {
-  padding: 6px 12px;
-  border-radius: var(--ios-r-full);
+.status-chip {
+  padding: 6px 14px;
+  border-radius: var(--r-full);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
-  letter-spacing: 0.3px;
+  white-space: nowrap;
+  letter-spacing: 0.4px;
+}
+.chip-new { 
+  background: linear-gradient(135deg, #F97316, #FB923C); 
+  color: white; 
+}
+.chip-transit { 
+  background: var(--color-info-bg); 
+  color: var(--color-info); 
+}
+.chip-active { 
+  background: var(--mint-soft); 
+  color: var(--color-success-text); 
+}
+.chip-done { 
+  background: var(--bg-input); 
+  color: var(--text-tertiary); 
 }
 
-.badge-new { 
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light)); 
-  color: #1a1a1a; 
+.card-progress {
+  height: 4px;
+  background: var(--bg-input);
+  margin: 0 18px;
+  border-radius: var(--r-full);
+  overflow: hidden;
 }
-.badge-transit { 
-  background: var(--ios-accent-bg); 
-  color: var(--ios-accent); 
-}
-.badge-active { 
-  background: var(--ios-green-bg); 
-  color: var(--ios-green); 
-}
-.badge-done { 
-  background: var(--ios-input); 
-  color: var(--ios-text-tertiary); 
-}
-
-.progress-bar-ios {
-  height: 3px;
-  background: var(--ios-input);
-  margin: 0 16px;
-}
-
-.progress-fill-ios {
+.progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
-  border-radius: var(--ios-r-full);
-  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--brand-gradient);
+  border-radius: var(--r-full);
+  transition: width 0.5s ease;
 }
 
-.card-actions-ios {
+.card-actions {
   display: flex;
   gap: 10px;
-  padding: 12px 16px 16px;
+  padding: 14px 18px 18px;
 }
 
-.action-btn-ios {
+.btn-card {
   flex: 1;
   padding: 13px;
-  border-radius: var(--ios-r-md);
+  border-radius: var(--r-md);
   font-family: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   border: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
-
-.action-btn-ios:active {
-  transform: scale(0.96);
+.btn-card:active { transform: scale(0.95); }
+.btn-nav {
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 2px solid var(--border-medium);
 }
-
-.btn-nav-ios {
-  background: var(--ios-text-primary);
-  color: var(--ios-text-white);
+.btn-survey {
+  background: var(--brand-gradient);
+  color: white;
+  box-shadow: 0 4px 14px rgba(8,145,178,0.3);
 }
-
-.btn-survey-ios {
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  color: #1a1a1a;
-  font-weight: 700;
-}
-
-.btn-skip-ios {
+.btn-skip {
   flex: none;
-  width: 48px;
-  padding: 0;
-  background: var(--ios-input);
-  color: var(--ios-text-tertiary);
+  padding: 13px;
+  background: transparent;
+  border: 2px solid var(--border-medium);
+  color: var(--text-secondary);
 }
 
-/* ============================================
-   BOTTOM TAB BAR - IOS FLOATING STYLE
-============================================ */
-.tab-bar-ios {
+/* Bottom Nav - Fixed at bottom */
+.bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 500;
-  padding: 12px 16px calc(16px + var(--safe-bottom));
-  background: transparent;
-  pointer-events: none;
-}
-
-.tab-bar-container {
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 0.5px solid var(--ios-separator);
-  border-radius: var(--ios-r-2xl);
-  padding: 8px 8px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 0.5px solid var(--border-light);
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0 -4px 30px rgba(0,0,0,0.08);
-  pointer-events: auto;
+  padding: 10px 12px calc(12px + var(--safe-bottom));
+  z-index: 300;
 }
 
-[data-theme="dark"] .tab-bar-container {
-  background: rgba(28,28,30,0.85);
-}
-
-.tab-item-ios {
+.nav-btn {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 8px 16px;
-  border-radius: var(--ios-r-md);
+  gap: 4px;
+  padding: 6px 4px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
+  border-radius: var(--r-sm);
+  transition: all 0.25s ease;
 }
-
-.tab-indicator {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: 20px;
-  height: 3px;
-  background: var(--ios-accent);
-  border-radius: var(--ios-r-full);
-  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.tab-item-ios.active .tab-indicator {
-  transform: translateX(-50%) scaleX(1);
-}
-
-.tab-item-ios.active {
-  transform: translateY(-2px);
-}
-
-.tab-icon-ios {
+.nav-icon {
   font-size: 24px;
-  color: var(--ios-text-tertiary);
+  color: var(--text-tertiary);
   transition: all 0.25s ease;
 }
-
-.tab-label-ios {
+.nav-label {
   font-size: 10px;
-  font-weight: 500;
-  color: var(--ios-text-tertiary);
+  font-weight: 700;
+  color: var(--text-tertiary);
   transition: all 0.25s ease;
 }
-
-.tab-item-ios.active .tab-icon-ios {
-  color: var(--ios-accent);
+.nav-btn.active .nav-icon {
+  color: var(--brand-primary);
+  transform: scale(1.1);
+}
+.nav-btn.active .nav-label {
+  color: var(--brand-primary);
+  font-weight: 800;
 }
 
-.tab-item-ios.active .tab-label-ios {
-  color: var(--ios-accent);
-  font-weight: 600;
-}
-
-/* ============================================
-   MAP MODAL - FULL SCREEN
-============================================ */
-.map-modal-ios {
+/* =========================================
+   MAP MODAL - Full Screen Overlay
+========================================= */
+.map-modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: var(--ios-bg);
-  z-index: 600;
+  background: var(--bg-app);
+  z-index: 400;
   flex-direction: column;
 }
-
-.map-modal-ios.visible {
+.map-modal.show {
   display: flex;
-  animation: iosSlideUp 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: nativeScreenIn 0.35s ease;
 }
 
-.map-header-ios {
-  background: var(--ios-surface);
-  padding-top: calc(var(--safe-top) + 12px);
-  padding-bottom: 14px;
+.map-header-bar {
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: calc(var(--safe-top) + 16px) 18px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-bottom: 0.5px solid var(--ios-separator);
+  gap: 14px;
+  border-bottom: 0.5px solid var(--border-light);
+  flex-shrink: 0;
 }
 
-.back-btn-ios {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--ios-input);
+.back-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-full);
+  background: var(--bg-input);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--ios-accent);
+  color: var(--brand-primary);
   font-size: 20px;
+  flex-shrink: 0;
 }
+.back-btn:active { transform: scale(0.92); }
 
-.dest-info-ios h3 {
+.dest-details h3 {
   font-size: 16px;
-  font-weight: 600;
-  color: var(--ios-text-primary);
+  font-weight: 800;
+  color: var(--text-primary);
 }
-
-.dest-info-ios p {
+.dest-details p {
   font-size: 13px;
-  color: var(--ios-text-tertiary);
-  margin-top: 2px;
+  color: var(--text-secondary);
+  margin-top: 3px;
 }
 
-#mapContainer {
+#map-container {
   flex: 1;
   width: 100%;
-  background: var(--ios-surface-secondary);
+  background: #E2E8F0;
+}
+[data-theme="dark"] #map-container { background: #1E1E22; }
+
+.map-footer-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 16px 18px calc(20px + var(--safe-bottom));
+  border-top: 0.5px solid var(--border-light);
+  flex-shrink: 0;
 }
 
-.map-footer-ios {
-  background: var(--ios-surface);
-  padding: 14px 20px calc(20px + var(--safe-bottom));
-  border-top: 0.5px solid var(--ios-separator);
-}
-
-.route-info-ios {
+.route-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
   padding: 14px 16px;
-  background: var(--ios-surface-secondary);
-  border-radius: var(--ios-r-lg);
+  background: var(--bg-input);
+  border-radius: var(--r-lg);
   margin-bottom: 14px;
 }
-
-.route-stat-ios {
-  text-align: center;
-  flex: 1;
+.route-stat { text-align: center; flex: 1; }
+.route-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
 }
-
-.route-val-ios {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
-  font-feature-settings: 'tnum';
-}
-
-.route-lbl-ios {
+.route-lbl {
   font-size: 10px;
-  font-weight: 600;
-  color: var(--ios-text-tertiary);
+  color: var(--text-tertiary);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
+  letter-spacing: 0.6px;
+  margin-top: 3px;
 }
-
-.route-divider-ios {
+.route-divider {
   width: 1px;
   height: 28px;
-  background: var(--ios-separator);
+  background: var(--border-medium);
 }
 
-.map-actions-ios {
-  display: flex;
-  gap: 12px;
-}
-
-.btn-map-open-ios {
+.map-actions { display: flex; gap: 12px; }
+.btn-map-open {
   flex: 2;
-  padding: 15px;
-  background: var(--ios-accent);
+  padding: 16px;
+  background: var(--brand-primary);
   color: white;
   border: none;
-  border-radius: var(--ios-r-lg);
-  font-weight: 600;
-  font-size: 15px;
+  border-radius: var(--r-lg);
+  font-weight: 800;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 }
-
-.btn-map-open-ios:active {
-  transform: scale(0.97);
-  opacity: 0.9;
-}
-
-.btn-arrive-ios {
+.btn-map-arrive {
   flex: 1;
-  padding: 15px;
-  background: var(--ios-green);
+  padding: 16px;
+  background: var(--mint);
   color: white;
   border: none;
-  border-radius: var(--ios-r-lg);
-  font-weight: 600;
-  font-size: 15px;
+  border-radius: var(--r-lg);
+  font-weight: 800;
+  font-size: 14px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
 }
 
-.btn-arrive-ios:active {
-  transform: scale(0.97);
+/* =========================================
+   SURVEY SCREEN - SCROLLABLE HEADER
+========================================= */
+#screen-survey {
+  background: var(--bg-app);
 }
 
-/* ============================================
-   SURVEY SCREEN - NO SCROLL FOR CHECKIN/FISIK
-============================================ */
-#surveyScreen {
-  background: var(--ios-bg);
+.survey-scroll-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-.survey-header-ios {
-  background: var(--ios-surface);
-  padding-top: calc(var(--safe-top) + 12px);
-  padding-bottom: 0;
-  position: relative;
-  z-index: 100;
-  border-bottom: 0.5px solid var(--ios-separator);
+/* Header scrolls with content */
+.survey-header {
+  background: var(--bg-surface);
+  padding: calc(var(--safe-top) + 16px) 18px 0;
+  border-bottom: 0.5px solid var(--border-light);
 }
 
-.survey-back-ios {
+.survey-back-link {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ios-accent);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-primary);
   cursor: pointer;
   padding: 10px 0;
-  margin-left: 16px;
+  margin-bottom: 6px;
 }
+.survey-back-link:active { opacity: 0.6; }
 
-.prop-title-ios {
+.survey-property-name {
   font-size: 18px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
-  padding: 0 16px 4px;
-  letter-spacing: -0.3px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
 }
-
-.prop-address-ios {
+.survey-property-address {
   font-size: 13px;
-  color: var(--ios-text-tertiary);
-  padding: 0 16px 16px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  margin-bottom: 16px;
 }
 
-/* Stepper - Compact iOS Style */
-.stepper-ios {
+/* Stepper - Scrolls with header */
+.stepper-track {
   display: flex;
-  gap: 6px;
-  padding: 12px 16px 14px;
+  gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
-  -ms-overflow-style: none;
+  padding: 14px 0 18px;
+  -webkit-overflow-scrolling: touch;
 }
+.stepper-track::-webkit-scrollbar { display: none; }
 
-.stepper-ios::-webkit-scrollbar {
-  display: none;
-}
-
-.step-pill-ios {
+.step-pill {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  padding: 9px 13px;
-  min-width: 68px;
-  border-radius: var(--ios-r-md);
-  background: var(--ios-input);
-  color: var(--ios-text-tertiary);
-  font-size: 10px;
-  font-weight: 600;
+  gap: 6px;
+  padding: 10px 18px;
+  min-width: 72px;
+  border-radius: var(--r-full);
+  background: var(--bg-input);
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.3s ease;
-  border: 1.5px solid transparent;
+  border: 2px solid transparent;
+  transition: all 0.35s ease;
+}
+.step-pill:active:not(.step-active):not(.step-done) { transform: scale(0.96); }
+.step-pill.step-active {
+  background: var(--brand-primary);
+  color: white;
+  box-shadow: 0 6px 20px rgba(8,145,178,0.35);
+  transform: scale(1.05);
+}
+.step-pill.step-done {
+  background: var(--mint-soft);
+  color: var(--color-success-text);
+  border-color: var(--mint);
 }
 
-.step-pill-ios.current {
-  background: var(--ios-text-primary);
-  color: var(--ios-text-white);
-  border-color: var(--ios-text-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--ios-shadow-md);
-}
-
-.step-pill-ios.done {
-  background: var(--ios-green-bg);
-  color: var(--ios-green);
-  border-color: var(--ios-green);
-}
-
-.step-num-ios {
+.step-icon {
   width: 24px;
   height: 24px;
-  border-radius: 50%;
-  background: var(--ios-separator);
-  color: var(--ios-text-tertiary);
+  border-radius: var(--r-full);
+  background: var(--border-medium);
+  color: var(--text-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  transition: all 0.25s ease;
+  font-size: 13px;
+  font-weight: 800;
 }
-
-.step-pill-ios.current .step-num-ios {
-  background: rgba(255,255,255,0.2);
+.step-pill.step-active .step-icon {
+  background: rgba(255,255,255,0.25);
+  color: white;
+}
+.step-pill.step-done .step-icon {
+  background: var(--mint);
   color: white;
 }
 
-.step-pill-ios.done .step-num-ios {
-  background: var(--ios-green);
-  color: white;
-}
-
-/* STEP PANELS - FIT TO SCREEN NO SCROLL */
-.step-panel-ios {
+/* Step Content - Extra bottom padding for nav */
+.step-content {
   display: none;
-  flex: 1;
-  flex-direction: column;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 16px 16px calc(90px + var(--safe-bottom));
+  padding: 18px 18px calc(100px + var(--safe-bottom));
+  animation: fadeUp 0.35s ease;
 }
+.step-content.active { display: block; }
 
-.step-panel-ios.show {
-  display: flex;
-  animation: iosFadeIn 0.35s ease;
-}
-
-/* CHECKIN PANEL - COMPACT FIT ONE SCREEN */
-.checkin-panel-ios {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Form Cards */
+.form-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-xl);
   padding: 20px;
-  gap: 20px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-xs);
 }
 
-.checkin-icon-circle-ios {
-  width: 72px;
-  height: 72px;
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 28px var(--gold-glow);
-}
-
-.checkin-title-ios {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
-  text-align: center;
-}
-
-.checkin-desc-ios {
-  font-size: 14px;
-  color: var(--ios-text-tertiary);
-  text-align: center;
-  max-width: 280px;
-  line-height: 1.45;
-}
-
-.coords-grid-ios {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  width: 100%;
-  max-width: 360px;
-}
-
-.coord-cell-ios {
-  background: var(--ios-surface);
-  border: 0.5px solid var(--ios-separator);
-  border-radius: var(--ios-r-md);
-  padding: 12px 8px;
-  text-align: center;
-}
-
-.coord-label-ios {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--ios-text-tertiary);
+.form-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  color: var(--brand-primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.coord-val-ios {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
-  margin-top: 4px;
-  font-feature-settings: 'tnum';
-}
-
-.checkin-btn-ios {
-  width: 80%;
-  max-width: 200px;
-  padding: 10px;
-  background: var(--ios-accent);
-  color: white;
-  border: none;
-  border-radius: var(--ios-r-lg);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(0,122,255,0.3);
-}
-
-.checkin-btn-ios:active {
-  transform: scale(0.97);
-}
-
-.checkin-success-ios {
-  display: none;
-  width: 100%;
-  max-width: 360px;
-  padding: 14px;
-  background: var(--ios-green-bg);
-  border-radius: var(--ios-r-md);
-  color: var(--ios-green);
-  font-weight: 600;
-  font-size: 14px;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.checkin-success-ios.visible {
-  display: flex;
-}
-
-.next-step-btn-ios {
-  width: 80%;
-  max-width: 200px;
-  padding: 1px;
-  background: var(--ios-surface);
-  color: var(--ios-accent);
-  border: 1.5px solid var(--ios-accent);
-  border-radius: var(--ios-r-lg);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-}
-
-.next-step-btn-ios:active {
-  transform: scale(0.97);
-  background: var(--ios-accent-bg);
-}
-
-/* FISIK PANEL - COMPACT GRID FIT ONE SCREEN */
-.fisik-panel-ios {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-}
-
-.form-section-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-xl);
-  padding: 10px;
-  border: 0.5px solid var(--ios-separator);
-}
-
-.form-section-title-ios {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--gold-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 0.5px solid var(--ios-separator);
-}
-
-.form-grid-ios {
+.form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
+  margin-bottom: 16px;
 }
+.form-row.full { grid-template-columns: 1fr; }
 
-.form-grid-ios.full {
-  grid-template-columns: 1fr;
-}
-
-.field-label-ios {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ios-text-primary);
-  margin-bottom: 6px;
+.field-label {
   display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 7px;
 }
 
-.input-ios {
+.text-input,
+.select-input {
   width: 100%;
-  padding: 10px 11px;
-  background: var(--ios-input);
-  border: 0.5px solid transparent;
-  border-radius: var(--ios-r-md);
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
   font-family: inherit;
-  font-size: 15px;
-  color: var(--ios-text-primary);
+  font-size: 16px;
+  color: var(--text-primary);
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+}
+.text-input:focus,
+.select-input:focus {
+  border-color: var(--brand-primary);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-glow);
 }
 
-.input-ios:focus {
-  background: var(--ios-surface);
-  border-color: var(--ios-accent);
-  box-shadow: 0 0 0 3px var(--ios-accent-bg);
-}
-
-.unit-wrap-ios {
-  position: relative;
-}
-
-.unit-wrap-ios .input-ios {
-  padding-right: 40px;
-}
-
-.unit-badge-ios {
+.unit-wrapper { position: relative; }
+.unit-wrapper .text-input { padding-right: 44px; }
+.unit-badge {
   position: absolute;
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 12px;
-  font-weight: 600;
-  color: var(--ios-text-tertiary);
+  font-weight: 800;
+  color: var(--text-tertiary);
 }
 
-.checkbox-grid-ios {
+.checkbox-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 11px;
 }
 
-.checkbox-option-ios {
+.checkbox-option {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 11px;
-  border: 1.5px solid var(--ios-separator);
-  border-radius: var(--ios-r-md);
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid var(--border-medium);
+  border-radius: var(--r-md);
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--ios-text-secondary);
-  transition: all 0.2s ease;
-}
-
-.checkbox-option-ios.selected {
-  border-color: var(--ios-accent);
-  background: var(--ios-accent-bg);
-  color: var(--ios-text-primary);
   font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+}
+.checkbox-option:active { transform: scale(0.98); }
+.checkbox-option.checked {
+  border-color: var(--brand-primary);
+  background: rgba(8,145,178,0.08);
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
-.check-box-ios {
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid var(--ios-separator);
-  border-radius: 6px;
+.checkmark-box {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-medium);
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  transition: all 0.2s ease;
+  font-size: 13px;
   flex-shrink: 0;
+  transition: all 0.25s ease;
 }
-
-.checkbox-option-ios.selected .check-box-ios {
-  background: var(--ios-accent);
-  border-color: var(--ios-accent);
+.checkbox-option.checked .checkmark-box {
+  background: var(--brand-primary);
+  border-color: transparent;
   color: white;
 }
 
-.fisik-next-btn {
-  width: 100%;
-  padding: 17px;
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  color: #1a1a1a;
-  border: none;
-  border-radius: var(--ios-r-lg);
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: auto;
-  box-shadow: 0 6px 20px var(--gold-glow);
+/* Photo Progress */
+.photo-progress-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 16px;
 }
-
-.fisik-next-btn:active {
-  transform: scale(0.97);
-}
-
-/* PHOTO PANEL - SCROLLABLE */
-.photo-prog-card-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-xl);
-  padding: 16px;
-  border: 0.5px solid var(--ios-separator);
-  margin-bottom: 14px;
-}
-
-.photo-prog-head-ios {
+.photo-progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
-
-.photo-prog-title-ios {
+.photo-progress-title {
   font-size: 15px;
-  font-weight: 600;
-  color: var(--ios-text-primary);
+  font-weight: 800;
+  color: var(--text-primary);
 }
-
-.photo-count-ios {
+.photo-progress-count {
   font-size: 15px;
-  font-weight: 700;
-  color: var(--gold-primary);
+  font-weight: 800;
+  color: var(--brand-primary);
 }
-
-.prog-track-ios {
-  height: 8px;
-  background: var(--ios-input);
-  border-radius: var(--ios-r-full);
+.progress-bar-track {
+  height: 10px;
+  background: var(--bg-input);
+  border-radius: var(--r-full);
   overflow: hidden;
+  border: 1px solid var(--border-light);
 }
-
-.prog-fill-ios {
+.progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--ios-accent), var(--gold-primary));
-  border-radius: var(--ios-r-full);
+  background: var(--brand-gradient);
+  border-radius: var(--r-full);
   transition: width 0.5s ease;
 }
 
 /* Category Cards */
-.cat-card-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-xl);
-  margin-bottom: 12px;
-  border: 0.5px solid var(--ios-separator);
+.category-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-xl);
+  margin-bottom: 14px;
+  border: 1px solid var(--border-light);
   overflow: hidden;
+  transition: all 0.3s ease;
 }
-
-.cat-card-ios::before {
+.category-card::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px;
-  border-radius: 4px 0 0 4px;
+  width: 5px;
+  border-radius: 0 5px 5px 0;
 }
+.category-card.is-required::before { background: var(--brand-gradient); }
+.category-card.is-required.is-completed::before { background: linear-gradient(180deg, var(--mint), #34D399); }
+.category-card.is-optional::before { background: var(--text-quaternary); }
 
-.cat-required::before { background: linear-gradient(180deg, var(--ios-accent), var(--ios-teal)); }
-.cat-done::before { background: linear-gradient(180deg, var(--ios-green), #30D158); }
-.cat-opt::before { background: var(--ios-text-quaternary); }
-
-.cat-header-ios {
+.category-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 16px 15px 18px;
+  padding: 16px 16px 16px 18px;
   cursor: pointer;
   position: relative;
-  transition: background 0.15s ease;
 }
+.category-header:active { background: var(--bg-input); }
 
-.cat-header-ios:active {
-  background: var(--ios-surface-secondary);
-}
+.category-left { display: flex; align-items: center; gap: 14px; }
 
-.cat-left-ios {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.cat-num-ios {
+.category-number {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
-  background: var(--ios-input);
-  border: 1.5px solid var(--ios-separator);
+  border-radius: var(--r-full);
+  background: var(--bg-input);
+  border: 2px solid var(--border-medium);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  font-weight: 700;
-  color: var(--ios-text-tertiary);
+  font-weight: 800;
+  color: var(--text-tertiary);
   flex-shrink: 0;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
-
-.cat-card-ios.is-done .cat-num-ios {
-  background: var(--ios-green);
+.category-card.is-completed .category-number {
+  background: var(--mint);
   border-color: transparent;
   color: white;
 }
 
-.cat-name-ios {
+.category-name {
   font-size: 15px;
-  font-weight: 600;
-  color: var(--ios-text-primary);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
-.cat-right-ios {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.category-right { display: flex; align-items: center; gap: 10px; }
 
-.note-btn-ios {
+.category-status-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 5px 11px;
+  border-radius: var(--r-full);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tag-required { background: var(--color-info-bg); color: var(--color-info); }
+.tag-optional { background: var(--bg-input); color: var(--text-tertiary); border: 1px solid var(--border-medium); }
+.tag-completed { background: var(--mint-soft); color: var(--color-success-text); border: 1px solid var(--mint); }
+
+.note-toggle-btn {
   width: 34px;
   height: 34px;
-  border-radius: 50%;
-  border: 1.5px solid var(--ios-separator);
-  background: var(--ios-surface);
+  border-radius: var(--r-full);
+  border: 2px solid var(--border-medium);
+  background: var(--bg-input);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--ios-text-tertiary);
+  color: var(--text-secondary);
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
-
-.note-btn-ios.has-note {
-  border-color: var(--gold-primary);
-  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
-  color: #1a1a1a;
+.note-toggle-btn.has-note {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
 }
-
-.note-dot-ios {
+.note-indicator-dot {
   display: none;
   width: 8px;
   height: 8px;
-  background: var(--ios-red);
-  border-radius: 50%;
+  background: var(--color-danger);
+  border-radius: var(--r-full);
   position: absolute;
   top: -2px;
   right: -2px;
-  border: 2px solid var(--ios-surface);
+  border: 2px solid var(--bg-surface);
 }
+.note-toggle-btn.has-note .note-indicator-dot { display: block; }
 
-.note-btn-ios.has-note .note-dot-ios {
-  display: block;
-}
-
-.status-pill-ios {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: var(--ios-r-full);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-.pill-mandatory { background: var(--ios-accent-bg); color: var(--ios-accent); }
-.pill-optional { background: var(--ios-input); color: var(--ios-text-tertiary); }
-.pill-complete { background: var(--ios-green-bg); color: var(--ios-green); }
-
-.cat-chevron-ios {
-  color: var(--ios-text-quaternary);
-  transition: transform 0.25s ease;
+.expand-chevron {
+  color: var(--text-tertiary);
+  transition: transform 0.3s ease;
   font-size: 20px;
 }
+.category-card.expanded .expand-chevron { transform: rotate(90deg); }
 
-.cat-card-ios.expanded .cat-chevron-ios {
-  transform: rotate(90deg);
-}
-
-.cat-body-ios {
+.category-body {
   display: none;
   padding: 0 16px 16px;
-  background: var(--ios-surface-secondary);
-  border-top: 0.5px solid var(--ios-separator);
+  background: var(--bg-input);
+  border-top: 1px solid var(--border-light);
+  animation: slideDown 0.3s ease;
 }
-
-.cat-card-ios.expanded .cat-body-ios {
-  display: block;
-  animation: iosFadeIn 0.25s ease;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+.category-card.expanded .category-body { display: block; }
 
-.tip-box-ios {
-  font-size: 12px;
-  color: var(--ios-text-secondary);
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-md);
+.tip-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: var(--r-md);
   padding: 12px 14px;
   margin-bottom: 14px;
-  line-height: 1.45;
-  border-left: 3px solid var(--gold-primary);
+  line-height: 1.5;
+  border-left: 4px solid var(--accent);
 }
 
-.photo-zone-ios {
-  border: 2px dashed var(--ios-separator);
-  border-radius: var(--ios-r-lg);
-  background: var(--ios-surface);
+.photo-capture-zone {
+  border: 2.5px dashed var(--border-medium);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
   min-height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  transition: all 0.25s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-
-.photo-zone-ios.has-img {
+.photo-capture-zone.has-photo {
   border-style: solid;
-  border-color: var(--ios-green);
-  border-width: 2px;
+  border-color: var(--mint);
+  border-width: 2.5px;
 }
 
-.photo-empty-ios {
-  text-align: center;
-  padding: 24px;
+.photo-empty-state { text-align: center; padding: 28px; }
+.photo-empty-icon {
+  font-size: 48px;
+  color: var(--text-quaternary);
+  margin-bottom: 10px;
 }
-
-.photo-empty-icon-ios {
-  font-size: 44px;
-  color: var(--ios-text-quaternary);
-}
-
-.photo-empty-text-ios {
+.photo-empty-title {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--ios-text-tertiary);
-  margin-top: 8px;
+  font-weight: 700;
+  color: var(--text-tertiary);
 }
-
-.photo-empty-hint-ios {
+.photo-empty-subtitle {
   font-size: 12px;
-  color: var(--ios-text-quaternary);
+  color: var(--text-quaternary);
   margin-top: 4px;
-  opacity: 0.7;
 }
 
-.preview-wrap-ios {
-  position: relative;
+.photo-preview-wrap { position: relative; width: 100%; }
+.photo-preview-img {
   width: 100%;
-}
-
-.preview-img-ios {
-  width: 100%;
-  height: 200px;
+  height: 190px;
   object-fit: cover;
   display: block;
+  border-radius: var(--r-md);
 }
-
-.preview-overlay-ios {
+.photo-preview-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,0.85));
-  padding: 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  padding: 12px 14px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  border-radius: 0 0 var(--r-md) var(--r-md);
 }
-
-.overlay-info-ios {
+.overlay-meta {
   font-size: 11px;
-  color: rgba(255,255,255,0.9);
+  color: white;
   display: flex;
   align-items: center;
   gap: 4px;
-  font-weight: 500;
-}
-
-.photo-btns-ios {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.photo-btn-ios {
-  flex: 1;
-  padding: 13px;
-  border-radius: var(--ios-r-md);
-  font-family: inherit;
-  font-size: 14px;
   font-weight: 600;
+}
+
+.photo-action-buttons { display: flex; gap: 12px; margin-top: 14px; }
+.btn-photo-action {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   border: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+}
+.btn-photo-action:active { transform: scale(0.95); }
+.btn-capture-photo {
+  background: var(--brand-primary);
+  color: white;
+}
+.btn-retake-photo {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 2px solid rgba(239,68,68,0.3);
 }
 
-.photo-btn-ios:active {
-  transform: scale(0.96);
-}
-
-.btn-capture-ios {
-  background: var(--ios-text-primary);
-  color: var(--ios-text-white);
-}
-
-.btn-retake-ios {
-  background: var(--ios-red-bg);
-  color: var(--ios-red);
-  border: 1.5px solid rgba(255,59,48,0.2);
-}
-
-.note-preview-ios {
+.note-preview-area {
   display: none;
   margin-top: 14px;
   padding: 12px 14px;
-  background: linear-gradient(135deg, var(--gold-glow), rgba(218,165,32,0.06));
-  border-radius: var(--ios-r-md);
-  font-size: 12px;
-  color: var(--gold-primary);
+  background: var(--accent-soft);
+  border-radius: var(--r-md);
+  font-size: 13px;
+  color: #9A3412;
   line-height: 1.5;
   align-items: flex-start;
   gap: 8px;
-  border: 1px solid rgba(184,134,11,0.2);
+  border: 1px solid rgba(249,115,22,0.25);
 }
-
-.note-preview-ios.visible {
-  display: flex;
+[data-theme="dark"] .note-preview-area {
+  color: #FDBA74;
+  background: rgba(249,115,22,0.12);
 }
+.note-preview-area.visible { display: flex; }
 
-/* SUBMIT PANEL */
-.submit-panel-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-xl);
-  padding: 18px;
-  border: 0.5px solid var(--ios-separator);
-  margin-bottom: 14px;
-}
-
-.submit-title-ios {
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
+/* Submit Panel */
+.submit-summary-card {
+  background: var(--bg-surface);
+  border-radius: var(--r-xl);
+  padding: 22px;
+  border: 1px solid var(--border-light);
   margin-bottom: 16px;
 }
-
-.summary-row-ios {
+.submit-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+}
+.summary-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   padding: 14px 0;
-  border-bottom: 0.5px solid var(--ios-separator);
+  border-bottom: 1px solid var(--border-light);
 }
+.summary-row:last-child { border: none; }
+.summary-icon { font-size: 24px; }
+.summary-text { flex: 1; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.summary-status { font-size: 13px; font-weight: 800; }
+.status-ok { color: var(--mint); }
+.status-no { color: var(--color-danger); }
 
-.summary-row-ios:last-child {
-  border: none;
-}
-
-.summ-icon-ios {
-  font-size: 22px;
-}
-
-.summ-text-ios {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ios-text-primary);
-}
-
-.summ-status-ios {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.st-ok-ios { color: var(--ios-green); }
-.st-no-ios { color: var(--ios-red); }
-
-.warning-box-ios {
-  background: var(--ios-red-bg);
-  border: 1px solid rgba(255,59,48,0.2);
-  border-radius: var(--ios-r-lg);
-  padding: 16px;
-  margin-bottom: 16px;
+.warning-alert {
+  background: var(--color-danger-bg);
+  border: 2px solid rgba(239,68,68,0.25);
+  border-radius: var(--r-lg);
+  padding: 16px 18px;
+  margin-bottom: 18px;
   font-size: 14px;
-  color: var(--ios-red);
-  font-weight: 500;
-  line-height: 1.45;
+  color: var(--color-danger);
+  font-weight: 700;
+  line-height: 1.5;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: flex-start;
 }
 
-.submit-btn-ios {
+.btn-submit-report {
   width: 100%;
-  padding: 17px;
-  background: var(--ios-text-primary);
-  color: var(--ios-text-white);
+  padding: 18px;
+  background: var(--brand-gradient);
+  color: white;
   border: none;
-  border-radius: var(--ios-r-lg);
+  border-radius: var(--r-lg);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 6px 24px rgba(8,145,178,0.35);
+  transition: all 0.25s ease;
 }
-
-.submit-btn-ios:disabled {
-  background: var(--ios-text-quaternary);
+.btn-submit-report:disabled {
+  background: var(--text-quaternary);
+  color: var(--bg-app);
+  box-shadow: none;
   cursor: not-allowed;
 }
 
-.submit-btn-ios:not(:disabled):active {
-  transform: scale(0.97);
+/* Checkin Panel */
+.checkin-container { text-align: center; }
+.checkin-icon-circle {
+  width: 72px;
+  height: 72px;
+  background: var(--brand-gradient-warm);
+  border-radius: var(--r-full);
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 28px rgba(13,148,136,0.4);
+}
+.checkin-heading {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.checkin-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
-/* POPUP / BOTTOM SHEET */
-.popup-overlay-ios {
+.coords-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.coord-item {
+  background: var(--bg-input);
+  padding: 12px;
+  border-radius: var(--r-md);
+}
+.coord-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.coord-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+.btn-checkin-action {
+  width: 100%;
+  padding: 16px;
+  background: var(--brand-gradient-warm);
+  color: white;
+  border: none;
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 5px 20px rgba(13,148,136,0.35);
+  transition: all 0.25s ease;
+}
+.btn-checkin-action:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.checkin-success-msg {
+  display: none;
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--mint-soft);
+  color: var(--color-success-text);
+  border-radius: var(--r-md);
+  font-weight: 800;
+  font-size: 13px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.checkin-success-msg.show { display: flex; }
+
+.btn-next-step {
+  width: 100%;
+  padding: 16px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-medium);
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+}
+.btn-next-step:active {
+  background: var(--bg-input);
+  transform: scale(0.98);
+}
+
+/* Popup Sheet */
+.popup-backdrop {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: var(--bg-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 700;
+  z-index: 500;
   align-items: flex-end;
   justify-content: center;
 }
+.popup-backdrop.open { display: flex; }
 
-.popup-overlay-ios.open {
-  display: flex;
-}
-
-.bottom-sheet-ios {
-  background: var(--ios-surface);
-  border-radius: var(--ios-r-2xl) var(--ios-r-2xl) 0 0;
+.popup-sheet {
+  background: var(--bg-surface);
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
   width: 100%;
-  max-width: 500px;
-  padding: 20px 24px calc(28px + var(--safe-bottom));
-  animation: iosSlideUp 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  max-width: 480px;
+  padding: 22px 22px calc(28px + var(--safe-bottom));
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-.sheet-handle-ios {
-  width: 36px;
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.sheet-drag-handle {
+  width: 40px;
   height: 5px;
-  background: var(--ios-separator);
-  border-radius: var(--ios-r-full);
+  background: var(--border-medium);
+  border-radius: var(--r-full);
   margin: 0 auto 20px;
 }
-
-.sheet-title-ios {
+.sheet-heading {
   font-size: 19px;
-  font-weight: 700;
-  color: var(--ios-text-primary);
-  margin-bottom: 4px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 5px;
 }
-
-.sheet-sub-ios {
+.sheet-subheading {
   font-size: 14px;
-  color: var(--ios-text-tertiary);
+  color: var(--text-secondary);
   margin-bottom: 18px;
 }
-
-.notes-textarea-ios {
+.notes-textarea {
   width: 100%;
   min-height: 120px;
   padding: 14px;
-  background: var(--ios-input);
-  border: 0.5px solid transparent;
-  border-radius: var(--ios-r-md);
+  background: var(--bg-input);
+  border: 2px solid var(--border-medium);
+  border-radius: var(--r-md);
   font-family: inherit;
   font-size: 15px;
-  color: var(--ios-text-primary);
+  color: var(--text-primary);
   outline: none;
   resize: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
+  line-height: 1.5;
 }
-
-.notes-textarea-ios:focus {
-  border-color: var(--ios-accent);
-  background: var(--ios-surface);
-}
-
-.char-count-ios {
+.notes-textarea:focus { border-color: var(--brand-primary); }
+.char-counter {
   text-align: right;
   font-size: 12px;
-  color: var(--ios-text-tertiary);
+  color: var(--text-tertiary);
   margin-top: 8px;
 }
-
-.sheet-btns-ios {
-  display: flex;
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.btn-cancel-ios {
+.popup-button-row { display: flex; gap: 12px; margin-top: 18px; }
+.btn-popup-cancel {
   flex: 1;
   padding: 15px;
-  background: var(--ios-input);
-  border: none;
-  border-radius: var(--ios-r-md);
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ios-text-primary);
+  background: var(--bg-input);
+  border: 2px solid var(--border-medium);
+  border-radius: var(--r-md);
+  font-weight: 800;
+  color: var(--text-primary);
   cursor: pointer;
+  font-size: 14px;
 }
-
-.btn-save-ios {
+.btn-popup-save {
   flex: 2;
   padding: 15px;
-  background: var(--ios-accent);
-  border: none;
-  border-radius: var(--ios-r-md);
-  font-weight: 600;
-  font-size: 16px;
+  background: var(--brand-primary);
   color: white;
+  border: none;
+  border-radius: var(--r-md);
+  font-weight: 800;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.hidden-file-ios { display: none; }
+.hidden-input { display: none; }
 
-.toast-ios {
+.toast-notification {
   position: fixed;
-  bottom: 110px;
+  bottom: calc(100px + var(--safe-bottom));
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--ios-text-primary);
-  color: var(--ios-text-white);
-  padding: 14px 24px;
-  border-radius: var(--ios-r-full);
+  transform: translateX(-50%) translateY(24px);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  padding: 14px 26px;
+  border-radius: var(--r-full);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.35s ease;
   z-index: 999;
   pointer-events: none;
-  box-shadow: var(--ios-shadow-lg);
+  box-shadow: var(--shadow-xl);
   white-space: nowrap;
 }
-
-.toast-ios.show {
+.toast-notification.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
-}
-
-.spinner-ios {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Utility for blue in dark mode */
-[data-theme="dark"] :root {
-  --ios-blue: var(--ios-accent);
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen" class="screen active">
-  <div class="login-wrapper">
-    <div class="login-card-ios">
-      <div class="brand-row">
-        <div class="brand-icon-ios"><span>VP</span></div>
-        <div class="brand-name-ios">ValuPro</div>
-      </div>
-      <p class="login-subtitle-ios">Tim Lapangan Survey</p>
-      
-      <div class="input-group-ios">
-        <label class="label-ios">Email Kantor</label>
-        <input type="email" class="textfield-ios" id="emailInput" value="budi@kjpp.co.id" placeholder="nama@kjpp.co.id">
-      </div>
-      
-      <div class="input-group-ios">
-        <label class="label-ios">Kata Sandi</label>
-        <input type="password" class="textfield-ios" id="passInput" value="password123" placeholder="Masukkan password">
-      </div>
-      
-      <button class="btn-ios-primary btn-ios-gold" id="loginBtn" onclick="doLogin()">
-        Masuk ke Sistem
-        <span class="material-symbols-rounded" style="font-size: 18px;">arrow_forward</span>
-      </button>
+<!-- LOGIN SCREEN -->
+<div id="screen-login" class="screen active">
+  <div class="login-card">
+    <div class="logo-area">
+      <div class="logo-mark">VP</div>
+      <div class="logo-text">ValuPro</div>
     </div>
+    <p class="login-subtitle">Tim Lapangan Survey</p>
+    
+    <div class="form-group">
+      <label class="form-label">Email Kantor</label>
+      <input type="email" class="input-field" id="loginEmail" value="budi@kjpp.co.id" placeholder="nama@kjpp.co.id">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Kata Sandi</label>
+      <input type="password" class="input-field" id="loginPass" value="password123" placeholder="••••••••">
+    </div>
+    
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+      Masuk ke Sistem
+    </button>
   </div>
 </div>
 
-<!-- HOME -->
-<div id="homeScreen" class="screen">
-  <header class="home-header-ios">
-    <div class="header-bar">
-      <div class="user-avatar-stack">
-        <div class="avatar-ring-ios"><div class="avatar-inner-ios">BS</div></div>
-        <div class="user-meta">
-          <h1>Budi Santoso</h1>
-          <p>Surveyor Senior</p>
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen">
+  <header class="home-header">
+    <div class="header-top">
+      <div class="user-profile">
+        <div class="avatar"><div class="avatar-inner">BS</div></div>
+        <div>
+          <div class="user-info-name">Budi Santoso</div>
+          <div class="user-info-role">Surveyor Senior</div>
         </div>
       </div>
-      <button class="theme-toggle-ios" onclick="toggleTheme()" id="themeBtn">
-        <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="material-icons-round" id="themeIcon">dark_mode</span>
       </button>
     </div>
     
-    <div class="stats-row-ios">
-      <div class="stat-card-ios"><div class="stat-value-ios">5</div><div class="stat-label-ios">Total</div></div>
-      <div class="stat-card-ios"><div class="stat-value-ios">2</div><div class="stat-label-ios">Berjalan</div></div>
-      <div class="stat-card-ios"><div class="stat-value-ios">3</div><div class="stat-label-ios">Selesai</div></div>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Total Tugas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">2</div>
+        <div class="stat-label">Berjalan</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Selesai</div>
+      </div>
     </div>
   </header>
   
-  <main class="main-scroll-ios">
-    <div class="section-header-ios">
-      <h2 class="section-title-ios">Penugasan Hari Ini</h2>
-      <span class="section-link-ios">Lihat Semua</span>
-    </div>
-    <div class="task-list-ios" id="taskList"></div>
-  </main>
+  <div class="main-scroll-wrapper">
+    <main class="main-scroll">
+      <div class="section-header">
+        <h2 class="section-title">Penugasan Hari Ini</h2>
+        <span class="section-action">Lihat Semua</span>
+      </div>
+      <div class="task-list" id="taskListContainer"></div>
+    </main>
+  </div>
   
-  <nav class="tab-bar-ios">
-    <div class="tab-bar-container">
-      <div class="tab-item-ios active" onclick="switchTab('home', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">home</span>
-        <span class="tab-label-ios">Beranda</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('tasks', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">assignment</span>
-        <span class="tab-label-ios">Tugas</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('history', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">history</span>
-        <span class="tab-label-ios">Riwayat</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('profile', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">person</span>
-        <span class="tab-label-ios">Profil</span>
-      </div>
+  <nav class="bottom-nav" id="homeNav">
+    <div class="nav-btn active" onclick="switchTab('home', this)">
+      <span class="material-icons-round nav-icon">home</span>
+      <span class="nav-label">Beranda</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('tasks', this)">
+      <span class="material-icons-round nav-icon">assignment</span>
+      <span class="nav-label">Tugas</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('history', this)">
+      <span class="material-icons-round nav-icon">history</span>
+      <span class="nav-label">Riwayat</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('profile', this)">
+      <span class="material-icons-round nav-icon">person</span>
+      <span class="nav-label">Profil</span>
     </div>
   </nav>
 </div>
 
 <!-- MAP MODAL -->
-<div class="map-modal-ios" id="mapModal">
-  <div class="map-header-ios">
-    <button class="back-btn-ios" onclick="closeMap()"><span class="material-symbols-rounded">chevron_left</span></button>
-    <div class="dest-info-ios">
-      <h3 id="mapDestName">-</h3>
-      <p id="mapDestAddr">-</p>
+<div class="map-modal" id="mapModal">
+  <div class="map-header-bar">
+    <button class="back-btn" onclick="closeMapModal()">
+      <span class="material-icons-round">arrow_back</span>
+    </button>
+    <div class="dest-details">
+      <h3 id="mapDestTitle">-</h3>
+      <p id="mapDestAddress">-</p>
     </div>
   </div>
-  <div id="mapContainer"></div>
-  <div class="map-footer-ios">
-    <div class="route-info-ios">
-      <div class="route-stat-ios"><div class="route-val-ios" id="rDist">4.2 km</div><div class="route-lbl-ios">Jarak</div></div>
-      <div class="route-divider-ios"></div>
-      <div class="route-stat-ios"><div class="route-val-ios" id="rTime">12 mnt</div><div class="route-lbl-ios">Estimasi</div></div>
-      <div class="route-divider-ios"></div>
-      <div class="route-stat-ios"><div class="route-val-ios">Lancar</div><div class="route-lbl-ios">Traffic</div></div>
+  <div id="map-container"></div>
+  <div class="map-footer-panel">
+    <div class="route-info">
+      <div class="route-stat">
+        <div class="route-val" id="routeDistance">4.2 km</div>
+        <div class="route-lbl">Jarak</div>
+      </div>
+      <div class="route-divider"></div>
+      <div class="route-stat">
+        <div class="route-val" id="routeTime">12 mnt</div>
+        <div class="route-lbl">Estimasi</div>
+      </div>
+      <div class="route-divider"></div>
+      <div class="route-stat">
+        <div class="route-val">Lancar</div>
+        <div class="route-lbl">Traffic</div>
+      </div>
     </div>
-    <div class="map-actions-ios">
-      <button class="btn-map-open-ios" onclick="openExternalMap()">
-        <span class="material-symbols-rounded">map</span>Buka Peta
+    <div class="map-actions">
+      <button class="btn-map-open" onclick="openExternalMap()">
+        <span class="material-icons-round">map</span>Buka Peta
       </button>
-      <button class="btn-arrive-ios" onclick="markArrived()">
-        <span class="material-symbols-rounded">check_circle</span>Tiba
+      <button class="btn-map-arrive" onclick="confirmArrival()">
+        <span class="material-icons-round">check_circle</span>Tiba
       </button>
     </div>
   </div>
 </div>
 
-<!-- SURVEY -->
-<div id="surveyScreen" class="screen">
-  <div class="survey-header-ios">
-    <div class="survey-back-ios" onclick="goHome()">
-      <span class="material-symbols-rounded" style="font-size: 18px;">chevron_left</span>Kembali
-    </div>
-    <div class="prop-title-ios" id="propTitle">-</div>
-    <div class="prop-address-ios" id="propAddr">-</div>
-    
-    <div class="stepper-ios" id="stepperEl">
-      <div class="step-pill-ios done" data-st="0" onclick="goStep(0)"><div class="step-num-ios">&#10003;</div><span>Check-in</span></div>
-      <div class="step-pill-ios done" data-st="1" onclick="goStep(1)"><div class="step-num-ios">&#10003;</div><span>Fisik</span></div>
-      <div class="step-pill-ios current" data-st="2" onclick="goStep(2)"><div class="step-num-ios">3</div><span>Foto</span></div>
-      <div class="step-pill-ios" data-st="3" onclick="goStep(3)"><div class="step-num-ios">4</div><span>Submit</span></div>
-    </div>
-  </div>
-
-  <!-- CHECKIN PANEL - NO SCROLL, FIT SCREEN -->
-  <div class="step-panel-ios show" id="panel0">
-    <div class="checkin-panel-ios">
-      <div class="checkin-icon-circle-ios">
-        <span class="material-symbols-rounded" style="font-size: 34px; color: #1a1a1a;">location_on</span>
+<!-- SURVEY SCREEN -->
+<div id="screen-survey" class="screen">
+  <div class="survey-scroll-wrapper">
+    <div class="survey-header">
+      <div class="survey-back-link" onclick="goToHome()">
+        <span class="material-icons-round" style="font-size: 17px;">arrow_back</span>Kembali
       </div>
-      <h2 class="checkin-title-ios">Konfirmasi Lokasi</h2>
-      <p class="checkin-desc-ios">Pastikan Anda sudah berada di lokasi properti yang akan disurvei.</p>
+      <div class="survey-property-name" id="surveyPropName">-</div>
+      <div class="survey-property-address" id="surveyPropAddr">-</div>
       
-      <div class="coords-grid-ios">
-        <div class="coord-cell-ios"><div class="coord-label-ios">Latitude</div><div class="coord-val-ios" id="cLat">--</div></div>
-        <div class="coord-cell-ios"><div class="coord-label-ios">Longitude</div><div class="coord-val-ios" id="cLng">--</div></div>
-        <div class="coord-cell-ios"><div class="coord-label-ios">Akurasi</div><div class="coord-val-ios" id="cAcc">--</div></div>
+      <div class="stepper-track" id="stepperTrack">
+        <div class="step-pill step-done" data-step="0" onclick="goToStep(0)">
+          <div class="step-icon">&#10003;</div>
+          <span>Check-in</span>
+        </div>
+        <div class="step-pill step-done" data-step="1" onclick="goToStep(1)">
+          <div class="step-icon">&#10003;</div>
+          <span>Fisik</span>
+        </div>
+        <div class="step-pill step-active" data-step="2" onclick="goToStep(2)">
+          <div class="step-icon">3</div>
+          <span>Foto</span>
+        </div>
+        <div class="step-pill" data-step="3" onclick="goToStep(3)">
+          <div class="step-icon">4</div>
+          <span>Submit</span>
+        </div>
       </div>
-
-      <button class="checkin-btn-ios" id="checkinBtn" onclick="doCheckin()">
-        <span class="material-symbols-rounded">my_location</span>Ambil Lokasi Saat Ini
-      </button>
-      
-      <div class="checkin-success-ios" id="checkinOk">
-        <span class="material-symbols-rounded">check_circle</span>Lokasi Berhasil Dicatat
-      </div>
-      
-      <button class="next-step-btn-ios" onclick="goStep(1)">
-        Lanjut ke Data Fisik
-        <span class="material-symbols-rounded" style="font-size: 18px;">chevron_right</span>
-      </button>
     </div>
-  </div>
 
-  <!-- FISIK PANEL - NO SCROLL, FIT SCREEN -->
-  <div class="step-panel-ios" id="panel1">
-    <div class="fisik-panel-ios">
-      <div class="form-section-ios">
-        <div class="form-section-title-ios">Dimensi Properti</div>
-        <div class="form-grid-ios">
-          <div>
-            <label class="field-label-ios">Luas Tanah</label>
-            <div class="unit-wrap-ios"><input type="number" class="input-ios" placeholder="0"><span class="unit-badge-ios">m²</span></div>
+    <!-- Step 0: Check-in -->
+    <div class="step-content" id="stepPanel0">
+      <div class="form-card checkin-container">
+        <div class="checkin-icon-circle">
+          <span class="material-icons-round" style="font-size: 34px;">location_on</span>
+        </div>
+        <h3 class="checkin-heading">Konfirmasi Lokasi</h3>
+        <p class="checkin-description">Pastikan Anda sudah berada di lokasi properti.</p>
+        
+        <div class="coords-display">
+          <div class="coord-item">
+            <div class="coord-label">Lat</div>
+            <div class="coord-value" id="coordLat">--</div>
           </div>
-          <div>
-            <label class="field-label-ios">Luas Bangunan</label>
-            <div class="unit-wrap-ios"><input type="number" class="input-ios" placeholder="0"><span class="unit-badge-ios">m²</span></div>
+          <div class="coord-item">
+            <div class="coord-label">Lng</div>
+            <div class="coord-value" id="coordLng">--</div>
+          </div>
+          <div class="coord-item">
+            <div class="coord-label">Acc</div>
+            <div class="coord-value" id="coordAcc">--</div>
           </div>
         </div>
-        <div class="form-grid-ios">
-          <div><label class="field-label-ios">Jumlah Lantai</label><input type="number" class="input-ios" value="1"></div>
-          <div><label class="field-label-ios">Tahun Dibangun</label><input type="number" class="input-ios" value="2010"></div>
+        
+        <button class="btn-checkin-action" id="checkinBtn" onclick="performCheckin()">
+          <span class="material-icons-round">my_location</span>Ambil Lokasi Saat Ini
+        </button>
+        
+        <div class="checkin-success-msg" id="checkinSuccessMsg">
+          <span class="material-icons-round">check_circle</span>Lokasi Berhasil Dicatat
         </div>
       </div>
       
-      <div class="form-section-ios">
-        <div class="form-section-title-ios">Kondisi dan Fasilitas</div>
-        <div class="form-grid-ios full">
-          <select class="input-ios"><option>Sangat Baik</option><option selected>Cukup Baik</option><option>Kurang</option></select>
-        </div>
-        <div class="checkbox-grid-ios">
-          <div class="checkbox-option-ios selected" onclick="toggleOpt(this)"><div class="check-box-ios">&#10003;</div>Listrik PLN</div>
-          <div class="checkbox-option-ios selected" onclick="toggleOpt(this)"><div class="check-box-ios">&#10003;</div>Air PDAM</div>
-          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Garasi</div>
-          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Kolam Renang</div>
-          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Pager</div>
-          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Taman</div>
-        </div>
-      </div>
-      
-      <button class="fisik-next-btn" onclick="goStep(2)">
-        Lanjut ke Dokumentasi Foto
-        <span class="material-symbols-rounded" style="font-size: 20px;">chevron_right</span>
+      <button class="btn-next-step" onclick="goToStep(1)">
+        Lanjut ke Data Fisik<span class="material-icons-round" style="margin-left: 6px;">arrow_forward</span>
       </button>
     </div>
-  </div>
 
-  <!-- PHOTO PANEL - SCROLLABLE -->
-  <div class="step-panel-ios" id="panel2">
-    <div class="photo-prog-card-ios">
-      <div class="photo-prog-head-ios">
-        <span class="photo-prog-title-ios">Progress Dokumentasi</span>
-        <span class="photo-count-ios" id="pCount">5 / 14</span>
+    <!-- Step 1: Physical Data -->
+    <div class="step-content" id="stepPanel1">
+      <div class="form-card">
+        <div class="form-section-title">Dimensi Properti</div>
+        <div class="form-row">
+          <div>
+            <label class="field-label">Luas Tanah</label>
+            <div class="unit-wrapper">
+              <input type="number" class="text-input" placeholder="0">
+              <span class="unit-badge">m²</span>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Luas Bangunan</label>
+            <div class="unit-wrapper">
+              <input type="number" class="text-input" placeholder="0">
+              <span class="unit-badge">m²</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="field-label">Jumlah Lantai</label>
+            <input type="number" class="text-input" value="1">
+          </div>
+          <div>
+            <label class="field-label">Tahun Dibangun</label>
+            <input type="number" class="text-input" value="2010">
+          </div>
+        </div>
       </div>
-      <div class="prog-track-ios"><div class="prog-fill-ios" id="pBar" style="width:35%"></div></div>
+      
+      <div class="form-card">
+        <div class="form-section-title">Kondisi & Fasilitas</div>
+        <div class="form-row full">
+          <select class="select-input">
+            <option>Sangat Baik</option>
+            <option selected>Cukup Baik</option>
+            <option>Kurang</option>
+          </select>
+        </div>
+        <div class="checkbox-grid">
+          <div class="checkbox-option checked" onclick="toggleCheckbox(this)">
+            <div class="checkmark-box">&#10003;</div>Listrik PLN
+          </div>
+          <div class="checkbox-option checked" onclick="toggleCheckbox(this)">
+            <div class="checkmark-box">&#10003;</div>Air PDAM
+          </div>
+          <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <div class="checkmark-box"></div>Garasi
+          </div>
+          <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <div class="checkmark-box"></div>Kolam Renang
+          </div>
+        </div>
+      </div>
+      
+      <button class="btn-next-step" onclick="goToStep(2)">
+        Lanjut ke Dokumentasi Foto<span class="material-icons-round" style="margin-left: 6px;">arrow_forward</span>
+      </button>
     </div>
-    <div id="catList"></div>
-    <button class="next-step-btn-ios" style="margin: 16px;" onclick="goStep(3)">
-      Lanjut ke Review dan Kirim
-      <span class="material-symbols-rounded" style="font-size: 18px;">chevron_right</span>
-    </button>
-  </div>
 
-  <!-- SUBMIT PANEL -->
-  <div class="step-panel-ios" id="panel3">
-    <div class="submit-panel-ios">
-      <div class="submit-title-ios">Ringkasan Laporan</div>
-      <div class="summary-row-ios">
-        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--ios-green)">location_on</span>
-        <span class="summ-text-ios">Check-in GPS</span>
-        <span class="summ-status-ios st-ok-ios">OK</span>
+    <!-- Step 2: Photos -->
+    <div class="step-content step-active" id="stepPanel2">
+      <div class="photo-progress-card">
+        <div class="photo-progress-header">
+          <span class="photo-progress-title">Progress Dokumentasi</span>
+          <span class="photo-progress-count" id="photoCountDisplay">5 / 14</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="photoProgressBar" style="width: 35%"></div>
+        </div>
       </div>
-      <div class="summary-row-ios">
-        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--ios-text-primary)">straighten</span>
-        <span class="summ-text-ios">Data Fisik</span>
-        <span class="summ-status-ios st-ok-ios">OK</span>
-      </div>
-      <div class="summary-row-ios">
-        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--gold-primary)">photo_camera</span>
-        <span class="summ-text-ios">Foto Wajib</span>
-        <span class="summ-status-ios st-no-ios">5/8</span>
-      </div>
+      
+      <div id="categoryListContainer"></div>
+      
+      <button class="btn-next-step" onclick="goToStep(3)" style="margin-top: 10px;">
+        Lanjut ke Review & Kirim<span class="material-icons-round" style="margin-left: 6px;">arrow_forward</span>
+      </button>
     </div>
-    <div class="warning-box-ios">
-      <span class="material-symbols-rounded">warning</span>
-      <span>Masih ada <strong>3 foto wajib</strong> yang belum diambil.</span>
+
+    <!-- Step 3: Submit -->
+    <div class="step-content" id="stepPanel3">
+      <div class="submit-summary-card">
+        <div class="submit-title">Ringkasan Laporan</div>
+        <div class="summary-row">
+          <span class="summary-icon material-icons-round" style="color: var(--mint)">location_on</span>
+          <span class="summary-text">Check-in GPS</span>
+          <span class="summary-status status-ok">OK</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-icon material-icons-round" style="color: var(--brand-primary)">straighten</span>
+          <span class="summary-text">Data Fisik</span>
+          <span class="summary-status status-ok">OK</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-icon material-icons-round" style="color: var(--accent)">photo_camera</span>
+          <span class="summary-text">Foto Wajib</span>
+          <span class="summary-status status-no">5/8</span>
+        </div>
+      </div>
+      
+      <div class="warning-alert">
+        <span class="material-icons-round">warning</span>
+        <span>Masih ada <strong>3 foto wajib</strong> yang belum diambil.</span>
+      </div>
+      
+      <button class="btn-submit-report" disabled>Kirim Laporan Survei</button>
     </div>
-    <button class="submit-btn-ios" disabled>Kirim Laporan Survei</button>
   </div>
   
-  <!-- Tab Bar for Survey Too -->
-  <nav class="tab-bar-ios">
-    <div class="tab-bar-container">
-      <div class="tab-item-ios active" onclick="switchTab('home', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">home</span>
-        <span class="tab-label-ios">Beranda</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('tasks', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">assignment</span>
-        <span class="tab-label-ios">Tugas</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('history', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">history</span>
-        <span class="tab-label-ios">Riwayat</span>
-      </div>
-      <div class="tab-item-ios" onclick="switchTab('profile', this)">
-        <div class="tab-indicator"></div>
-        <span class="material-symbols-rounded tab-icon-ios">person</span>
-        <span class="tab-label-ios">Profil</span>
-      </div>
+  <nav class="bottom-nav" id="surveyNav">
+    <div class="nav-btn active" onclick="switchTab('home', this)">
+      <span class="material-icons-round nav-icon">home</span>
+      <span class="nav-label">Beranda</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('tasks', this)">
+      <span class="material-icons-round nav-icon">assignment</span>
+      <span class="nav-label">Tugas</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('history', this)">
+      <span class="material-icons-round nav-icon">history</span>
+      <span class="nav-label">Riwayat</span>
+    </div>
+    <div class="nav-btn" onclick="switchTab('profile', this)">
+      <span class="material-icons-round nav-icon">person</span>
+      <span class="nav-label">Profil</span>
     </div>
   </nav>
 </div>
 
-<!-- NOTES POPUP -->
-<div class="popup-overlay-ios" id="notesPopup">
-  <div class="bottom-sheet-ios">
-    <div class="sheet-handle-ios"></div>
-    <div class="sheet-title-ios">Catatan Foto</div>
-    <div class="sheet-sub-ios" id="noteCatName">Nama Kategori</div>
-    <textarea class="notes-textarea-ios" id="noteInput" maxlength="300" placeholder="Tulis catatan detail di sini..."></textarea>
-    <div class="char-count-ios"><span id="cCnt">0</span>/300</div>
-    <div class="sheet-btns-ios">
-      <button class="btn-cancel-ios" onclick="closeNote()">Batal</button>
-      <button class="btn-save-ios" onclick="saveNote()">Simpan</button>
+<!-- Notes Popup -->
+<div class="popup-backdrop" id="notesPopup">
+  <div class="popup-sheet">
+    <div class="sheet-drag-handle"></div>
+    <div class="sheet-heading">Catatan Foto</div>
+    <div class="sheet-subheading" id="noteCategoryName">Nama Kategori</div>
+    <textarea class="notes-textarea" id="noteTextarea" maxlength="300" placeholder="Tulis catatan detail di sini..."></textarea>
+    <div class="char-counter"><span id="charCountValue">0</span>/300</div>
+    <div class="popup-button-row">
+      <button class="btn-popup-cancel" onclick="closeNotesPopup()">Batal</button>
+      <button class="btn-popup-save" onclick="saveNote()">Simpan</button>
     </div>
   </div>
 </div>
 
-<input type="file" accept="image/*" capture="environment" class="hidden-file-ios" id="camInput">
-<div class="toast-ios" id="toastEl"></div>
+<input type="file" accept="image/*" capture="environment" class="hidden-input" id="cameraInput">
+<div class="toast-notification" id="toastEl"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <script>
-// DATA
-const LOCATIONS = [
+// ==================== DATA ====================
+const LOCATIONS_DATA = [
   {id:'L1',order:'ORD-0046',name:'Bpk. Hendra Wijaya',addr:'Griya Indah Blok C-5, Bekasi',type:'Rumah',dist:'4.2km',eta:'12mnt',lat:-6.2341,lng:106.9983,status:'transit',prog:35,pDone:5},
   {id:'L2',order:'ORD-0048',name:'PT. Graha Nusantara',addr:'Jl. Raya Bogor KM.22, Depok',type:'Kantor',dist:'12km',eta:'28mnt',lat:-6.3921,lng:106.8333,status:'new',prog:0,pDone:0},
   {id:'L3',order:'ORD-0043',name:'Ibu. Sari Dewi',addr:'Jl. Mawar No.7, Bogor',type:'Rumah',dist:'-',eta:'-',lat:-6.5950,lng:106.8167,status:'done',prog:100,pDone:14}
 ];
 
-const CATEGORIES = [
-  {id:0,name:'Tampak Depan',req:true,done:true,hasNote:true,note:'Pagar sisi kiri sedikit mengelupas catnya.',img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'},
-  {id:1,name:'Tampak Belakang',req:true,done:false,expanded:true,hasNote:false},
-  {id:2,name:'Tampak Samping Kiri',req:true,done:false,hasNote:false},
-  {id:3,name:'Tampak Samping Kanan',req:true,done:false,hasNote:false},
-  {id:4,name:'Ruang Tamu',req:true,done:true,hasNote:false,img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80'},
-  {id:5,name:'Dapur',req:true,done:true,hasNote:true,note:'Kitchen set kayu lapis kondisi baik.',img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80'},
-  {id:6,name:'Kamar Utama',req:true,done:false,hasNote:false},
-  {id:7,name:'Kamar Mandi',req:true,done:false,hasNote:false},
-  {id:8,name:'Lingkungan Sekitar',req:false,done:false,hasNote:false}
+const PHOTO_CATEGORIES = [
+  {id:0,name:'Tampak Depan',required:true,completed:true,hasNote:true,noteText:'Pagar sisi kiri sedikit mengelupas catnya.',imageSrc:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'},
+  {id:1,name:'Tampak Belakang',required:true,completed:false,isExpanded:true,hasNote:false},
+  {id:2,name:'Tampak Samping Kiri',required:true,completed:false,hasNote:false},
+  {id:3,name:'Tampak Samping Kanan',required:true,completed:false,hasNote:false},
+  {id:4,name:'Ruang Tamu',required:true,completed:true,hasNote:false,imageSrc:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80'},
+  {id:5,name:'Dapur',required:true,completed:true,hasNote:true,noteText:'Kitchen set kayu lapis kondisi baik.',imageSrc:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80'},
+  {id:6,name:'Kamar Utama',required:true,completed:false,hasNote:false},
+  {id:7,name:'Kamar Mandi',required:true,completed:false,hasNote:false},
+  {id:8,name:'Lingkungan Sekitar',required:false,completed:false,hasNote:false}
 ];
 
-let NOTES = {};
-let PHOTOS_DONE = {};
-CATEGORIES.forEach(c => { if(c.hasNote && c.note) NOTES[c.id]=c.note; if(c.done) PHOTOS_DONE[c.id]=true; });
+let notesStorage = {};
+let photosCompleted = {};
+PHOTO_CATEGORIES.forEach(c => { if(c.hasNote && c.noteText) notesStorage[c.id]=c.noteText; if(c.completed) photosCompleted[c.id]=true; });
 
-let curLoc = null;
-let camTarget = null;
-let noteTarget = null;
-let map = null;
-let marker = null;
+let currentLocationId = null;
+let cameraTargetId = null;
+let noteTargetId = null;
+let mapInstance = null;
+let destinationMarker = null;
 
-// INIT
+// ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', () => {
-  const theme = localStorage.getItem('vp_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', theme);
-  updateThemeIcon(theme);
-  if(localStorage.getItem('vp_login') === 'yes') showScreen('home');
-  renderCards();
-  renderCats();
-  document.getElementById('camInput').addEventListener('change', handleCam);
-  document.getElementById('noteInput').addEventListener('input', () => document.getElementById('cCnt').textContent = document.getElementById('noteInput').value.length);
-  document.getElementById('notesPopup').addEventListener('click', e => { if(e.target===e.currentTarget) closeNote(); });
+  const savedTheme = localStorage.getItem('vp_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeToggleButton(savedTheme);
+
+  if(localStorage.getItem('vp_logged_in') === 'yes') showScreen('home');
+  
+  renderTaskCards();
+  renderPhotoCategories();
+  
+  document.getElementById('cameraInput').addEventListener('change', handleCameraCapture);
+  document.getElementById('noteTextarea').addEventListener('input', () => {
+    document.getElementById('charCountValue').textContent = document.getElementById('noteTextarea').value.length;
+  });
+  document.getElementById('notesPopup').addEventListener('click', e => {
+    if(e.target === e.currentTarget) closeNotesPopup();
+  });
 });
 
+// ==================== THEME MANAGEMENT ====================
 function toggleTheme() {
-  const el = document.documentElement;
-  const cur = el.getAttribute('data-theme');
-  const nxt = cur==='light'?'dark':'light';
-  el.setAttribute('data-theme', nxt);
-  localStorage.setItem('vp_theme', nxt);
-  updateThemeIcon(nxt);
-  if(map) setTimeout(()=>map.invalidateSize(), 350);
-}
-function updateThemeIcon(t) {
-  document.getElementById('themeIcon').textContent = t==='light'?'dark_mode':'light_mode';
+  const root = document.documentElement;
+  const currentTheme = root.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', newTheme);
+  localStorage.setItem('vp_theme', newTheme);
+  updateThemeToggleButton(newTheme);
+  
+  if(mapInstance) setTimeout(() => mapInstance.invalidateSize(), 350);
 }
 
-function showScreen(id) {
+function updateThemeToggleButton(theme) {
+  document.getElementById('themeIcon').textContent = theme === 'light' ? 'dark_mode' : 'light_mode';
+}
+
+// ==================== SCREEN NAVIGATION ====================
+function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById(id+'Screen');
-  if(el) el.classList.add('active');
+  const targetScreen = document.getElementById('screen-' + screenId);
+  if(targetScreen) targetScreen.classList.add('active');
 }
 
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab-item-ios').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  if(tab==='home') goHome();
-  else showToast(`Menu ${tab} segera hadir`);
+function switchTab(tabName, btnElement) {
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  btnElement.classList.add('active');
+  if(tabName === 'home') goToHome();
+  else showToast(`Menu ${tabName} segera hadir`);
 }
 
-function doLogin() {
-  const b = document.getElementById('loginBtn');
-  b.innerHTML = '<span class="spinner-ios"></span> Memproses...';
-  b.disabled = true;
+// ==================== LOGIN HANDLER ====================
+function handleLogin() {
+  const loginBtn = document.getElementById('loginBtn');
+  loginBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+  loginBtn.disabled = true;
+  
   setTimeout(() => {
-    localStorage.setItem('vp_login','yes');
+    localStorage.setItem('vp_logged_in', 'yes');
     showScreen('home');
-    b.innerHTML = 'Masuk ke Sistem<span class="material-symbols-rounded" style="font-size:18px;">arrow_forward</span>';
-    b.disabled = false;
+    loginBtn.innerHTML = 'Masuk ke Sistem';
+    loginBtn.disabled = false;
     showToast('Selamat datang!');
   }, 1400);
 }
 
-// CARDS
-function renderCards() {
-  const c = document.getElementById('taskList'); c.innerHTML='';
-  LOCATIONS.forEach((l,i) => {
-    const div = document.createElement('div');
-    const cfg = getStatusCfg(l.status);
-    div.className = 'task-card-ios';
-    div.style.animationDelay = (i*0.08)+'s';
-    div.innerHTML = `
-      <div class="card-body-ios">
-        <div class="status-dot-ios ${cfg.dot}"></div>
-        <div class="card-info-ios">
-          <div class="order-tag-ios">${l.order}</div>
-          <div class="client-name-ios">${l.name}</div>
-          <div class="address-ios"><span class="material-symbols-rounded" style="font-size:15px;">place</span>${l.addr}</div>
-          <div class="meta-row-ios">
-            <div class="meta-item-ios"><span class="material-symbols-rounded" style="font-size:14px;">home</span>${l.type}</div>
-            <div class="meta-item-ios"><span class="material-symbols-rounded" style="font-size:14px;">photo_camera</span>${l.pDone}/14</div>
-          </div>
-        </div>
-        <div class="status-badge-ios ${cfg.badge}">${cfg.txt}</div>
-      </div>
-      <div class="progress-bar-ios"><div class="progress-fill-ios" style="width:${l.prog}%"></div></div>
-      ${l.status!=='done'?`<div class="card-actions-ios">
-        <button class="action-btn-ios btn-nav-ios" onclick="event.stopPropagation();openMap('${l.id}')"><span class="material-symbols-rounded">navigation</span>Navigasi</button>
-        <button class="action-btn-ios btn-survey-ios" onclick="event.stopPropagation();startSurvey('${l.id}')"><span class="material-symbols-rounded">assignment</span>Survey</button>
-        <button class="action-btn-ios btn-skip-ios" onclick="event.stopPropagation();startSurvey('${l.id}')"><span class="material-symbols-rounded">skip_next</span></button>
-      </div>`:''}`;
-    if(l.status!=='done') div.onclick = () => openMap(l.id);
-    c.appendChild(div);
-  });
-}
-function getStatusCfg(s) {
-  const m={new:{dot:'dot-new',badge:'badge-new',txt:'BARU'},transit:{dot:'dot-transit',badge:'badge-transit',txt:'TRANSIT'},active:{dot:'dot-active',badge:'badge-active',txt:'SURVEY'},done:{dot:'dot-done',badge:'badge-done',txt:'SELESAI'}};
-  return m[s]||m.new;
-}
-
-// MAP
-function openMap(id) {
-  curLoc = id;
-  const l = LOCATIONS.find(x=>x.id===id);
-  if(!l) return;
-  document.getElementById('mapDestName').textContent = l.name;
-  document.getElementById('mapDestAddr').textContent = l.addr;
-  document.getElementById('rDist').textContent = l.dist;
-  document.getElementById('rTime').textContent = l.eta;
-  document.getElementById('mapModal').classList.add('visible');
+// ==================== TASK CARDS RENDERING ====================
+function renderTaskCards() {
+  const container = document.getElementById('taskListContainer');
+  container.innerHTML = '';
   
-  if(!map) {
-    map = L.map('mapContainer',{zoomControl:false}).setView([l.lat,l.lng],15);
-    L.control.zoom({position:'bottomright'}).addTo(map);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
-  } else {
-    map.setView([l.lat,l.lng],15);
-  }
-  if(marker) map.removeLayer(marker);
-  const icon = L.divIcon({html:`<div style="background:#FF3B30;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 3px 8px rgba(0,0,0,0.3);"></div>`,className:'',iconSize:[24,24],iconAnchor:[12,24]});
-  marker = L.marker([l.lat,l.lng],{icon:icon}).addTo(map).bindPopup(`<b>${l.name}</b><br>${l.addr}`).openPopup();
-  const uLat=l.lat+0.008,uLng=l.lng-0.01;
-  L.polyline([[uLat,uLng],[l.lat,l.ng]],{color:'#007AFF',weight:4,opacity:0.6,dashArray:'10,8'}).addTo(map);
-  const uIcon=L.divIcon({html:`<div style="background:#007AFF;width:14px;height:14px;border-radius:50%;border:3px solid white;"></div>`,className:'',iconSize:[14,14],iconAnchor:[7,7]});
-  L.marker([uLat,uLng],{icon:uIcon}).addTo(map);
-  map.fitBounds(L.latLngBounds([[uLat,uLng],[l.lat,l.lng]]),{padding:[50,50]});
-  if(l.status==='new'){l.status='transit';renderCards();}
-}
-function closeMap(){document.getElementById('mapModal').classList.remove('visible');}
-function openExternalMap(){
-  const l=LOCATIONS.find(x=>x.id===curLoc);
-  if(l)window.open(`https://www.openstreetmap.org/?mlat=${l.lat}&mlon=${l.lng}#map=17/${l.lat}/${l.lng}`,'_blank');
-}
-function markArrived(){
-  const l=LOCATIONS.find(x=>x.id===curLoc);
-  if(l){l.status='active';closeMap();showToast('Anda tiba! Memulai survey...');setTimeout(()=>startSurvey(curLoc),900);renderCards();}
-}
-
-// SURVEY
-function startSurvey(id){
-  curLoc=id;
-  const l=LOCATIONS.find(x=>x.id===id);
-  document.getElementById('propTitle').textContent=`${l.order} · ${l.name}`;
-  document.getElementById('propAddr').textContent=l.addr;
-  showScreen('survey');
-  goStep(0);
-}
-function goHome(){showScreen('home');}
-
-function goStep(n){
-  document.querySelectorAll('.step-panel-ios').forEach((p,i)=>p.classList.toggle('show',i===n));
-  document.querySelectorAll('.step-pill-ios').forEach((t,i)=>{
-    t.classList.remove('current','done');
-    if(i<n)t.classList.add('done');
-    if(i===n)t.classList.add('current');
+  LOCATIONS_DATA.forEach((loc, index) => {
+    const card = document.createElement('div');
+    const statusConfig = getStatusConfig(loc.status);
+    
+    card.className = 'task-card';
+    card.style.animationDelay = (index * 0.08) + 's';
+    
+    card.innerHTML = `
+      <div class="card-body">
+        <div class="status-dot ${statusConfig.dotClass}"></div>
+        <div class="card-content">
+          <div class="card-order-id">${loc.order}</div>
+          <div class="card-title">${loc.name}</div>
+          <div class="card-address">
+            <span class="material-icons-round" style="font-size: 16px;">place</span>${loc.addr}
+          </div>
+          <div class="card-meta">
+            <div class="meta-tag"><span class="material-icons-round" style="font-size: 15px;">home</span>${loc.type}</div>
+            <div class="meta-tag"><span class="material-icons-round" style="font-size: 15px;">photo_camera</span>${loc.pDone}/14</div>
+          </div>
+        </div>
+        <div class="status-chip ${statusConfig.chipClass}">${statusConfig.label}</div>
+      </div>
+      <div class="card-progress">
+        <div class="progress-fill" style="width: ${loc.prog}%"></div>
+      </div>
+      ${loc.status !== 'done' ? `
+      <div class="card-actions">
+        <button class="btn-card btn-nav" onclick="event.stopPropagation();openLocationMap('${loc.id}')">
+          <span class="material-icons-round">navigation</span>Navigasi
+        </button>
+        <button class="btn-card btn-survey" onclick="event.stopPropagation();beginSurvey('${loc.id}')">
+          <span class="material-icons-round">assignment</span>Survey
+        </button>
+        <button class="btn-card btn-skip" onclick="event.stopPropagation();beginSurvey('${loc.id}')">
+          <span class="material-icons-round">skip_next</span>
+        </button>
+      </div>` : ''}
+    `;
+    
+    if(loc.status !== 'done') card.onclick = () => openLocationMap(loc.id);
+    container.appendChild(card);
   });
 }
 
-function doCheckin(){
-  const b=document.getElementById('checkinBtn');
-  b.innerHTML='<span class="spinner-ios"></span> Mendeteksi...';
-  b.disabled=true;
-  setTimeout(()=>{
-    document.getElementById('cLat').textContent='-6.2341';
-    document.getElementById('cLng').textContent='106.9983';
-    document.getElementById('cAcc').textContent='\u00b18m';
-    b.innerHTML='<span class="material-symbols-rounded">check_circle</span>Lokasi Tercatat';
-    b.style.background='var(--ios-green)';
-    document.getElementById('checkinOk').classList.add('visible');
-    document.querySelector('[data-st="0"]').classList.add('done');
+function getStatusConfig(statusCode) {
+  const configs = {
+    new: { dotClass: 'dot-new', chipClass: 'chip-new', label: 'BARU' },
+    transit: { dotClass: 'dot-transit', chipClass: 'chip-transit', label: 'TRANSIT' },
+    active: { dotClass: 'dot-active', chipClass: 'chip-active', label: 'SURVEY' },
+    done: { dotClass: 'dot-done', chipClass: 'chip-done', label: 'SELESAI' }
+  };
+  return configs[statusCode] || configs.new;
+}
+
+// ==================== MAP FUNCTIONALITY ====================
+function openLocationMap(locationId) {
+  currentLocationId = locationId;
+  const locationData = LOCATIONS_DATA.find(l => l.id === locationId);
+  if(!locationData) return;
+  
+  document.getElementById('mapDestTitle').textContent = locationData.name;
+  document.getElementById('mapDestAddress').textContent = locationData.addr;
+  document.getElementById('routeDistance').textContent = locationData.dist;
+  document.getElementById('routeTime').textContent = locationData.eta;
+  
+  document.getElementById('mapModal').classList.add('show');
+  
+  initializeOrRefreshMap(locationData.lat, locationData.lng, locationData);
+  
+  if(locationData.status === 'new') {
+    locationData.status = 'transit';
+    renderTaskCards();
+  }
+}
+
+function initializeOrRefreshMap(lat, lng, locationData) {
+  if(!mapInstance) {
+    mapInstance = L.map('map-container', { zoomControl: false }).setView([lat, lng], 15);
+    L.control.zoom({position: 'bottomright'}).addTo(mapInstance);
+    
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(mapInstance);
+  } else {
+    mapInstance.setView([lat, lng], 15);
+  }
+  
+  if(destinationMarker) mapInstance.removeLayer(destinationMarker);
+  
+  const customIcon = L.divIcon({
+    html: `<div style="background:#EF4444;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 3px 10px rgba(0,0,0,0.35);"></div>`,
+    className: '',
+    iconSize: [26, 26],
+    iconAnchor: [13, 26]
+  });
+  
+  destinationMarker = L.marker([lat, lng], {icon: customIcon})
+    .addTo(mapInstance)
+    .bindPopup(`<strong>${locationData.name}</strong><br>${locationData.addr}`)
+    .openPopup();
+  
+  const userLat = lat + 0.01;
+  const userLng = lng - 0.01;
+  
+  L.polyline([[userLat, userLng], [lat, lng]], {
+    color: '#0891B2',
+    weight: 4,
+    opacity: 0.7,
+    dashArray: '10, 10'
+  }).addTo(mapInstance);
+  
+  const userIcon = L.divIcon({
+    html: `<div style="background:#0891B2;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.35);"></div>`,
+    className: '',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8]
+  });
+  L.marker([userLat, userLng], {icon: userIcon}).addTo(mapInstance);
+  
+  mapInstance.fitBounds(L.latLngBounds([[userLat, userLng], [lat, lng]]), {padding: [60, 60]});
+}
+
+function closeMapModal() {
+  document.getElementById('mapModal').classList.remove('show');
+}
+
+function openExternalMap() {
+  const loc = LOCATIONS_DATA.find(l => l.id === currentLocationId);
+  if(loc) {
+    window.open(`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}#map=17/${loc.lat}/${loc.lng}`, '_blank');
+  }
+}
+
+function confirmArrival() {
+  const loc = LOCATIONS_DATA.find(l => l.id === currentLocationId);
+  if(loc) {
+    loc.status = 'active';
+    closeMapModal();
+    showToast('Anda tiba! Memulai survey...');
+    setTimeout(() => beginSurvey(currentLocationId), 1000);
+    renderTaskCards();
+  }
+}
+
+// ==================== SURVEY WORKFLOW ====================
+function beginSurvey(locationId) {
+  currentLocationId = locationId;
+  const loc = LOCATIONS_DATA.find(l => l.id === locationId);
+  
+  document.getElementById('surveyPropName').textContent = `${loc.order} · ${loc.name}`;
+  document.getElementById('surveyPropAddr').textContent = loc.addr;
+  
+  showScreen('survey');
+  goToStep(2);
+  
+  // Reset scroll position
+  const wrapper = document.querySelector('.survey-scroll-wrapper');
+  if(wrapper) wrapper.scrollTop = 0;
+}
+
+function goToHome() {
+  showScreen('home');
+}
+
+// ==================== STEPPER LOGIC ====================
+function goToStep(stepNumber) {
+  document.querySelectorAll('.step-content').forEach((panel, idx) => {
+    panel.classList.toggle('active', idx === stepNumber);
+  });
+  
+  document.querySelectorAll('.step-pill').forEach((pill, idx) => {
+    pill.classList.remove('step-active', 'step-done');
+    if(idx < stepNumber) pill.classList.add('step-done');
+    if(idx === stepNumber) pill.classList.add('step-active');
+  });
+  
+  // Scroll to top of content
+  const wrapper = document.querySelector('.survey-scroll-wrapper');
+  if(wrapper) wrapper.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ==================== CHECK-IN ====================
+function performCheckin() {
+  const btn = document.getElementById('checkinBtn');
+  btn.innerHTML = '<span class="spinner"></span> Mendeteksi...';
+  btn.disabled = true;
+  
+  setTimeout(() => {
+    document.getElementById('coordLat').textContent = '-6.2341';
+    document.getElementById('coordLng').textContent = '106.9983';
+    document.getElementById('coordAcc').textContent = '±8m';
+    
+    btn.innerHTML = '<span class="material-icons-round">check_circle</span> Lokasi Tercatat';
+    btn.style.background = 'var(--mint)';
+    btn.style.boxShadow = '0 4px 16px rgba(16,185,129,0.35)';
+    
+    document.getElementById('checkinSuccessMsg').classList.add('show');
+    document.querySelector('[data-step="0"]').classList.add('step-done');
+    
     showToast('Check-in berhasil!');
-  },1500);
+  }, 1800);
 }
 
-function toggleOpt(el){
-  el.classList.toggle('selected');
-  el.querySelector('.check-box-ios').innerHTML=el.classList.contains('selected')?'&#10003;':'';
+// ==================== PHYSICAL DATA CHECKBOXES ====================
+function toggleCheckbox(element) {
+  element.classList.toggle('checked');
+  const checkbox = element.querySelector('.checkmark-box');
+  checkbox.innerHTML = element.classList.contains('checked') ? '&#10003;' : '';
 }
 
-// CATEGORIES
-function renderCats(){
-  const c=document.getElementById('catList');c.innerHTML='';
-  CATEGORIES.forEach(cat=>{
-    const el=document.createElement('div');
-    let cls=cat.req?'cat-required':'cat-opt';
-    let exp=cat.expanded?' expanded':'';
-    let doneCls=cat.done?' is-done cat-done':'';
-    el.className=`cat-card-ios${cls}${exp}${doneCls}`;
-    el.id='cc'+cat.id;
-    let pill='',pillTxt='';
-    if(cat.done){pill='pill-complete';pillTxt='Selesai';}
-    else if(cat.req){pill='pill-mandatory';pillTxt='Wajib';}
-    else{pill='pill-optional';pillTxt='Opsional';}
-    el.innerHTML=`
-      <div class="cat-header-ios" onclick="toggleCat(${cat.id})">
-        <div class="cat-left-ios">
-          <div class="cat-num-ios">${cat.done?'&#10003;':(cat.id+1)}</div>
-          <div class="cat-name-ios">${cat.name}</div>
+// ==================== PHOTO CATEGORIES ====================
+function renderPhotoCategories() {
+  const container = document.getElementById('categoryListContainer');
+  container.innerHTML = '';
+  
+  PHOTO_CATEGORIES.forEach(cat => {
+    const card = document.createElement('div');
+    
+    let requiredClass = cat.required ? 'is-required' : 'is-optional';
+    let completedClass = cat.completed ? 'is-completed' : '';
+    let expandedClass = cat.isExpanded ? 'expanded' : '';
+    
+    card.className = `category-card ${requiredClass} ${completedClass} ${expandedClass}`;
+    card.style.position = 'relative';
+    card.id = 'catCard' + cat.id;
+    
+    let statusTagClass = '', statusTagLabel = '';
+    if(cat.completed) {
+      statusTagClass = 'tag-completed';
+      statusTagLabel = 'Selesai';
+    } else if(cat.required) {
+      statusTagClass = 'tag-required';
+      statusTagLabel = 'Wajib';
+    } else {
+      statusTagClass = 'tag-optional';
+      statusTagLabel = 'Opsional';
+    }
+    
+    card.innerHTML = `
+      <div class="category-header" onclick="toggleCategoryExpand(${cat.id})">
+        <div class="category-left">
+          <div class="category-number">${cat.completed ? '&#10003;' : (cat.id + 1)}</div>
+          <div class="category-name">${cat.name}</div>
         </div>
-        <div class="cat-right-ios">
-          <div class="note-btn-ios${cat.hasNote?' has-note':''}" onclick="event.stopPropagation();openNote(${cat.id})">
-            <span class="material-symbols-rounded" style="font-size:17px;">edit</span>
-            <div class="note-dot-ios"></div>
+        <div class="category-right">
+          <div class="note-toggle-btn ${cat.hasNote ? 'has-note' : ''}" onclick="event.stopPropagation();openNotesPopup(${cat.id})">
+            <span class="material-icons-round" style="font-size: 17px;">edit</span>
+            <div class="note-indicator-dot"></div>
           </div>
-          <div class="status-pill-ios ${pill}">${pillTxt}</div>
-          <span class="material-symbols-rounded cat-chevron-ios">chevron_right</span>
+          <div class="category-status-tag ${statusTagClass}">${statusTagLabel}</div>
+          <span class="material-icons-round expand-chevron">chevron_right</span>
         </div>
       </div>
-      <div class="cat-body-ios">
-        ${cat.req?`<div class="tip-box-ios"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:text-bottom;">info</span>Ambil foto sudut lebar dari objek utama.</div>`:''}
-        <div class="photo-zone-ios${cat.done?' has-img':''}" id="pz${cat.id}">
-          ${cat.done?`
-            <div class="preview-wrap-ios">
-              <img src="${cat.img}" class="preview-img-ios">
-              <div class="preview-overlay-ios">
-                <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">schedule</span>09:14</span>
-                <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">gps_fixed</span>-6.234</span>
+      <div class="category-body">
+        ${cat.required ? `<div class="tip-hint"><span class="material-icons-round" style="font-size: 15px; vertical-align: text-bottom;">info</span>Ambil foto sudut lebar dari objek utama.</div>` : ''}
+        
+        <div class="photo-capture-zone ${cat.completed ? 'has-photo' : ''}" id="photoZone${cat.id}">
+          ${cat.completed ? `
+            <div class="photo-preview-wrap">
+              <img src="${cat.imageSrc}" class="photo-preview-img" alt="Preview">
+              <div class="photo-preview-overlay">
+                <span class="overlay-meta"><span class="material-icons-round" style="font-size: 14px;">schedule</span> 09:14</span>
+                <span class="overlay-meta"><span class="material-icons-round" style="font-size: 14px;">gps_fixed</span> -6.234</span>
               </div>
             </div>
-          `:`
-            <div class="photo-empty-ios">
-              <span class="material-symbols-rounded photo-empty-icon-ios">photo_camera</span>
-              <div class="photo-empty-text-ios">Belum Ada Foto</div>
-              <div class="photo-empty-hint-ios">Kamera diperlukan</div>
+          ` : `
+            <div class="photo-empty-state">
+              <span class="material-icons-round photo-empty-icon">photo_camera</span>
+              <div class="photo-empty-title">Belum Ada Foto</div>
+              <div class="photo-empty-subtitle">Ketuk untuk ambil foto</div>
             </div>
           `}
         </div>
-        <div class="photo-btns-ios">
-          ${cat.done?`<button class="photo-btn-ios btn-retake-ios" onclick="triggerCam(${cat.id})"><span class="material-symbols-rounded">refresh</span>Ulang Foto</button>`
-          :`<button class="photo-btn-ios btn-capture-ios" onclick="triggerCam(${cat.id})"><span class="material-symbols-rounded">camera_alt</span>Ambil Foto</button>`}
+        
+        <div class="photo-action-buttons">
+          ${cat.completed 
+            ? `<button class="btn-photo-action btn-retake-photo" onclick="triggerCamera(${cat.id})"><span class="material-icons-round">refresh</span> Ulang Foto</button>`
+            : `<button class="btn-photo-action btn-capture-photo" onclick="triggerCamera(${cat.id})"><span class="material-icons-round">camera_alt</span> Ambil Foto</button>`
+          }
         </div>
-        <div class="note-preview-ios${cat.hasNote?' visible':''}" id="np${cat.id}">
-          <span class="material-symbols-rounded">edit</span><span>${cat.note||''}</span>
+        
+        <div class="note-preview-area ${cat.hasNote ? 'visible' : ''}" id="notePreview${cat.id}">
+          <span class="material-icons-round">edit</span>
+          <span>${cat.noteText || ''}</span>
         </div>
-      </div>`;
-    c.appendChild(el);
+      </div>
+    `;
+    
+    container.appendChild(card);
   });
 }
 
-function toggleCat(id){document.getElementById('cc'+id).classList.toggle('expanded');}
-
-function triggerCam(id){
-  camTarget=id;
-  document.getElementById('camInput').value='';
-  document.getElementById('camInput').click();
+function toggleCategoryExpand(categoryId) {
+  document.getElementById('catCard' + categoryId).classList.toggle('expanded');
 }
 
-function handleCam(e){
-  const f=e.target.files[0];
-  if(!f||camTarget===null)return;
-  const r=new FileReader();
-  r.onload=function(ev){
-    const id=camTarget;
-    const zone=document.getElementById('pz'+id);
-    const card=document.getElementById('cc'+id);
-    const cat=CATEGORIES.find(c=>c.id===id);
-    zone.className='photo-zone-ios has-img';
-    zone.innerHTML=`
-      <div class="preview-wrap-ios">
-        <img src="${ev.target.result}" class="preview-img-ios">
-        <div class="preview-overlay-ios">
-          <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">schedule</span>${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>
-          <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">gps_fixed</span>OK</span>
+function triggerCamera(categoryId) {
+  cameraTargetId = categoryId;
+  document.getElementById('cameraInput').value = '';
+  document.getElementById('cameraInput').click();
+}
+
+function handleCameraCapture(event) {
+  const file = event.target.files[0];
+  if(!file || cameraTargetId === null) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const id = cameraTargetId;
+    const zone = document.getElementById('photoZone' + id);
+    const card = document.getElementById('catCard' + id);
+    const category = PHOTO_CATEGORIES.find(c => c.id === id);
+    
+    zone.className = 'photo-capture-zone has-photo';
+    zone.innerHTML = `
+      <div class="photo-preview-wrap">
+        <img src="${e.target.result}" class="photo-preview-img" alt="Captured">
+        <div class="photo-preview-overlay">
+          <span class="overlay-meta"><span class="material-icons-round" style="font-size: 14px;">schedule</span> ${new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</span>
+          <span class="overlay-meta"><span class="material-icons-round" style="font-size: 14px;">gps_fixed</span> OK</span>
         </div>
-      </div>`;
-    card.querySelector('.photo-btns-ios').innerHTML=`<button class="photo-btn-ios btn-retake-ios" onclick="triggerCam(${id})"><span class="material-symbols-rounded">refresh</span>Ulang Foto</button>`;
-    if(cat){cat.done=true;cat.img=ev.target.result;}
-    PHOTOS_DONE[id]=true;
-    card.classList.remove('cat-required','cat-opt');
-    card.classList.add('is-done','cat-done');
-    card.querySelector('.cat-num-ios').innerHTML='&#10003;';
-    const sp=card.querySelector('.status-pill-ios');
-    sp.className='status-pill-ios pill-complete';
-    sp.textContent='Selesai';
-    updateProg();
+      </div>
+    `;
+    
+    card.querySelector('.photo-action-buttons').innerHTML = `
+      <button class="btn-photo-action btn-retake-photo" onclick="triggerCamera(${id})">
+        <span class="material-icons-round">refresh</span> Ulang Foto
+      </button>
+    `;
+    
+    if(category) {
+      category.completed = true;
+      category.imageSrc = e.target.result;
+    }
+    photosCompleted[id] = true;
+    
+    card.classList.add('is-completed');
+    card.querySelector('.category-number').innerHTML = '&#10003;';
+    
+    const tag = card.querySelector('.category-status-tag');
+    tag.className = 'category-status-tag tag-completed';
+    tag.textContent = 'Selesai';
+    
+    updatePhotoProgress();
     showToast('Foto tersimpan!');
   };
-  r.readAsDataURL(f);
+  reader.readAsDataURL(file);
 }
 
-function updateProg(){
-  const total=CATEGORIES.filter(c=>c.req).length;
-  const done=Object.keys(PHOTOS_DONE).filter(k=>CATEGORIES.find(c=>c.id==parseInt(k))?.req).length;
-  const pct=Math.round((done/total)*100);
-  document.getElementById('pBar').style.width=pct+'%';
-  document.getElementById('pCount').textContent=`${done}/${total*2}`;
+function updatePhotoProgress() {
+  const totalRequired = PHOTO_CATEGORIES.filter(c => c.required).length;
+  const completedRequired = Object.keys(photosCompleted).filter(k => PHOTO_CATEGORIES.find(c => c.id == parseInt(k))?.required).length;
+  const percentage = Math.round((completedRequired / totalRequired) * 100);
+  
+  document.getElementById('photoProgressBar').style.width = percentage + '%';
+  document.getElementById('photoCountDisplay').textContent = `${completedRequired}/${totalRequired * 2} foto`;
 }
 
-// NOTES
-function openNote(id){
-  noteTarget=id;
-  const cat=CATEGORIES.find(c=>c.id===id);
-  document.getElementById('noteCatName').textContent=cat.name;
-  const ta=document.getElementById('noteInput');
-  ta.value=NOTES[id]||'';
-  document.getElementById('cCnt').textContent=ta.value.length;
+// ==================== NOTES POPUP ====================
+function openNotesPopup(categoryId) {
+  noteTargetId = categoryId;
+  const category = PHOTO_CATEGORIES.find(c => c.id === categoryId);
+  
+  document.getElementById('noteCategoryName').textContent = category.name;
+  const textarea = document.getElementById('noteTextarea');
+  textarea.value = notesStorage[categoryId] || '';
+  document.getElementById('charCountValue').textContent = textarea.value.length;
+  
   document.getElementById('notesPopup').classList.add('open');
-  setTimeout(()=>ta.focus(),320);
-}
-function closeNote(){document.getElementById('notesPopup').classList.remove('open');noteTarget=null;}
-function saveNote(){
-  const id=noteTarget;
-  const v=document.getElementById('noteInput').value.trim();
-  if(v){
-    NOTES[id]=v;
-    document.getElementById('cc'+id).querySelector('.note-btn-ios').classList.add('has-note');
-    const np=document.getElementById('np'+id);
-    np.lastElementChild.textContent=v;
-    np.classList.add('visible');
-  }else{
-    delete NOTES[id];
-    document.getElementById('cc'+id).querySelector('.note-btn-ios').classList.remove('has-note');
-    document.getElementById('np'+id).classList.remove('visible');
-  }
-  closeNote();
-  showToast(v?'Catatan disimpan':'Catatan dihapus');
+  setTimeout(() => textarea.focus(), 350);
 }
 
-function showToast(m){
-  const t=document.getElementById('toastEl');
-  t.textContent=m;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2600);
+function closeNotesPopup() {
+  document.getElementById('notesPopup').classList.remove('open');
+  noteTargetId = null;
+}
+
+function saveNote() {
+  const id = noteTargetId;
+  const content = document.getElementById('noteTextarea').value.trim();
+  
+  if(content) {
+    notesStorage[id] = content;
+    const btn = document.getElementById('catCard' + id).querySelector('.note-toggle-btn');
+    btn.classList.add('has-note');
+    
+    const preview = document.getElementById('notePreview' + id);
+    preview.lastElementChild.textContent = content;
+    preview.classList.add('visible');
+  } else {
+    delete notesStorage[id];
+    document.getElementById('catCard' + id).querySelector('.note-toggle-btn').classList.remove('has-note');
+    document.getElementById('notePreview' + id).classList.remove('visible');
+  }
+  
+  closeNotesPopup();
+  showToast(content ? 'Catatan disimpan' : 'Catatan dihapus');
+}
+
+// ==================== TOAST NOTIFICATION ====================
+function showToast(message) {
+  const toast = document.getElementById('toastEl');
+  toast.textContent = message;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 2800);
 }
 </script>
 </body>
