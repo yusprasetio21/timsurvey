@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ValuPro — Tim Lapangan</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+
+<style>
+/* ============================================
+   IOS 26 DESIGN SYSTEM
+============================================ */
+:root {
+  /* iOS 26 Color Palette */
+  --ios-bg: #F2F2F7;
+  --ios-surface: #FFFFFF;
+  --ios-surface-secondary: #F9F9FB;
+  --ios-input: rgba(118,118,128,0.12);
+  --ios-separator: rgba(60,60,67,0.12);
+  --ios-separator-opaque: #C6C6C8;
+  
+  --ios-text-primary: #000000;
+  --ios-text-secondary: #3C3C43;
+  --ios-text-tertiary: #8E8E93;
+  --ios-text-quaternary: #AEAEB2;
+  --ios-text-white: #FFFFFF;
+  
+  /* Accent - iOS Blue with warmth */
+  --ios-accent: #007AFF;
+  --ios-accent-light: #5AC8FA;
+  --ios-accent-bg: rgba(0,122,255,0.1);
+  
+  /* Gold accent for premium feel */
+  --gold-primary: #B8860B;
+  --gold-light: #DAA520;
+  --gold-glow: rgba(184,134,11,0.15);
+  
+  /* Semantic */
+  --ios-green: #34C759;
+  --ios-green-bg: rgba(52,199,89,0.12);
+  --ios-red: #FF3B30;
+  --ios-red-bg: rgba(255,59,48,0.1);
+  --ios-orange: #FF9500;
+  --ios-teal: #5AC8FA;
+  
+  /* Shadows - iOS style */
+  --ios-shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --ios-shadow-md: 0 4px 14px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --ios-shadow-lg: 0 10px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+  --ios-shadow-float: 0 12px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08);
+  
+  /* Radius - iOS 26 uses larger radius */
+  --ios-r-xs: 8px;
+  --ios-r-sm: 12px;
+  --ios-r-md: 16px;
+  --ios-r-lg: 20px;
+  --ios-r-xl: 24px;
+  --ios-r-2xl: 28px;
+  --ios-r-full: 9999px;
+  
+  /* Safe Areas */
+  --safe-top: env(safe-area-inset-top, 20px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[data-theme="dark"] {
+  --ios-bg: #000000;
+  --ios-surface: #1C1C1E;
+  --ios-surface-secondary: #2C2C2E;
+  --ios-input: rgba(118,118,128,0.24);
+  --ios-separator: rgba(84,84,88,0.65);
+  --ios-separator-opaque: #38383A;
+  
+  --ios-text-primary: #FFFFFF;
+  --ios-text-secondary: #EBEBF5;
+  --ios-text-tertiary: #EBEBF599;
+  --ios-text-quaternary: #EBEBF54D;
+  
+  --ios-accent: #0A84FF;
+  --ios-accent-light: #64D2FF;
+  --ios-accent-bg: rgba(10,132,255,0.2);
+  
+  --gold-primary: #E5B932;
+  --gold-light: #F0D060;
+  --gold-glow: rgba(229,185,50,0.2);
+  
+  --ios-green: #30D158;
+  --ios-green-bg: rgba(48,209,88,0.18);
+  --ios-red: #FF453A;
+  --ios-red-bg: rgba(255,69,58,0.18);
+  --ios-orange: #FF9F0A;
+  --ios-teal: #64D2FF;
+  
+  --ios-shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --ios-shadow-md: 0 4px 14px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.25);
+  --ios-shadow-lg: 0 10px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ============================================
+   BASE STYLES
+============================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, 'Inter', 'SF Pro Display', BlinkMacSystemFont, sans-serif;
+  background: var(--ios-bg);
+  color: var(--ios-text-primary);
+  line-height: 1.47;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Screen System */
+.screen {
+  display: none !important;
+  flex-direction: column;
+  height: 100dvh;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.screen.active {
+  display: flex !important;
+  animation: iosFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes iosFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes iosSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes iosPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes iosShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================
+   LOGIN SCREEN - IOS STYLE
+============================================ */
+#loginScreen {
+  background: linear-gradient(180deg, #1C1C1E 0%, #0D0D0F 100%);
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 340px;
+}
+
+.login-card-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-2xl);
+  padding: 32px 28px;
+  box-shadow: var(--ios-shadow-lg);
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.brand-icon-ios {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  border-radius: var(--ios-r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px var(--gold-glow);
+}
+
+.brand-icon-ios span {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.brand-name-ios {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--ios-text-primary);
+}
+
+.login-subtitle-ios {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ios-text-tertiary);
+  margin-bottom: 28px;
+}
+
+.input-group-ios {
+  margin-bottom: 16px;
+}
+
+.label-ios {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+}
+
+.textfield-ios {
+  width: 100%;
+  padding: 10px;
+  background: var(--ios-input);
+  border: none;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--ios-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.textfield-ios::placeholder {
+  color: var(--ios-text-quaternary);
+}
+
+.textfield-ios:focus {
+  background: rgba(118,118,128,0.18);
+  box-shadow: 0 0 0 4px var(--ios-accent-bg);
+}
+
+.btn-ios-primary {
+  width: 100%;
+  padding: 17px;
+  background: var(--ios-accent);
+  color: white;
+  border: none;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ios-primary:active:not(:disabled) {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.btn-ios-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ios-gold {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+/* ============================================
+   HOME SCREEN - IOS 26 STYLE
+============================================ */
+#homeScreen {
+  background: var(--ios-bg);
+}
+
+.home-header-ios {
+  background: linear-gradient(170deg, #1C1C1E 0%, #2C2C2E 50%, #1C1C1E 100%);
+  padding-top: calc(var(--safe-top) + 16px);
+  padding-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-header-ios::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 70%;
+  height: 80%;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.user-avatar-stack {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-ring-ios {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+}
+
+.avatar-inner-ios {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--ios-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--gold-primary);
+}
+
+.user-meta h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.2;
+}
+
+.user-meta p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.theme-toggle-ios {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-toggle-ios:active {
+  transform: scale(0.92);
+  background: rgba(255,255,255,0.18);
+}
+
+.stats-row-ios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card-ios {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--ios-r-lg);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.stat-value-ios {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+  font-feature-settings: 'tnum';
+}
+
+.stat-label-ios {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 6px;
+}
+
+/* Main Content Scrollable */
+.main-scroll-ios {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 16px calc(100px + var(--safe-bottom));
+  margin-top: -20px;
+  position: relative;
+  z-index: 2;
+  -webkit-overflow-scrolling: touch;
+}
+
+.section-header-ios {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 4px 14px;
+}
+
+.section-title-ios {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  letter-spacing: -0.4px;
+}
+
+.section-link-ios {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-accent);
+  cursor: pointer;
+}
+
+/* Task Cards - iOS Style */
+.task-list-ios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.task-card-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-xl);
+  overflow: hidden;
+  box-shadow: var(--ios-shadow-sm);
+  border: 0.5px solid var(--ios-separator);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: iosFadeIn 0.4s ease backwards;
+}
+
+.task-card-ios:active {
+  transform: scale(0.985);
+}
+
+.card-body-ios {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+}
+
+.status-dot-ios {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+  position: relative;
+}
+
+.status-dot-ios::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.3;
+  animation: iosPulse 2.5s infinite;
+}
+
+.dot-new { background: var(--gold-primary); }
+.dot-transit { background: var(--ios-blue, var(--ios-accent)); }
+.dot-active { background: var(--ios-green); }
+.dot-done { background: var(--ios-text-quaternary); }
+
+.card-info-ios {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-tag-ios {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.client-name-ios {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+
+.address-ios {
+  font-size: 13px;
+  color: var(--ios-text-tertiary);
+  line-height: 1.35;
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.meta-row-ios {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.meta-item-ios {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ios-text-tertiary);
+  font-weight: 500;
+}
+
+.status-badge-ios {
+  padding: 6px 12px;
+  border-radius: var(--ios-r-full);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+.badge-new { 
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light)); 
+  color: #1a1a1a; 
+}
+.badge-transit { 
+  background: var(--ios-accent-bg); 
+  color: var(--ios-accent); 
+}
+.badge-active { 
+  background: var(--ios-green-bg); 
+  color: var(--ios-green); 
+}
+.badge-done { 
+  background: var(--ios-input); 
+  color: var(--ios-text-tertiary); 
+}
+
+.progress-bar-ios {
+  height: 3px;
+  background: var(--ios-input);
+  margin: 0 16px;
+}
+
+.progress-fill-ios {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
+  border-radius: var(--ios-r-full);
+  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-actions-ios {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px 16px;
+}
+
+.action-btn-ios {
+  flex: 1;
+  padding: 13px;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.action-btn-ios:active {
+  transform: scale(0.96);
+}
+
+.btn-nav-ios {
+  background: var(--ios-text-primary);
+  color: var(--ios-text-white);
+}
+
+.btn-survey-ios {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.btn-skip-ios {
+  flex: none;
+  width: 48px;
+  padding: 0;
+  background: var(--ios-input);
+  color: var(--ios-text-tertiary);
+}
+
+/* ============================================
+   BOTTOM TAB BAR - IOS FLOATING STYLE
+============================================ */
+.tab-bar-ios {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  padding: 12px 16px calc(16px + var(--safe-bottom));
+  background: transparent;
+  pointer-events: none;
+}
+
+.tab-bar-container {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 0.5px solid var(--ios-separator);
+  border-radius: var(--ios-r-2xl);
+  padding: 8px 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.08);
+  pointer-events: auto;
+}
+
+[data-theme="dark"] .tab-bar-container {
+  background: rgba(28,28,30,0.85);
+}
+
+.tab-item-ios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 16px;
+  border-radius: var(--ios-r-md);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 20px;
+  height: 3px;
+  background: var(--ios-accent);
+  border-radius: var(--ios-r-full);
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.tab-item-ios.active .tab-indicator {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.tab-item-ios.active {
+  transform: translateY(-2px);
+}
+
+.tab-icon-ios {
+  font-size: 24px;
+  color: var(--ios-text-tertiary);
+  transition: all 0.25s ease;
+}
+
+.tab-label-ios {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ios-text-tertiary);
+  transition: all 0.25s ease;
+}
+
+.tab-item-ios.active .tab-icon-ios {
+  color: var(--ios-accent);
+}
+
+.tab-item-ios.active .tab-label-ios {
+  color: var(--ios-accent);
+  font-weight: 600;
+}
+
+/* ============================================
+   MAP MODAL - FULL SCREEN
+============================================ */
+.map-modal-ios {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--ios-bg);
+  z-index: 600;
+  flex-direction: column;
+}
+
+.map-modal-ios.visible {
+  display: flex;
+  animation: iosSlideUp 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.map-header-ios {
+  background: var(--ios-surface);
+  padding-top: calc(var(--safe-top) + 12px);
+  padding-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.back-btn-ios {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ios-input);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ios-accent);
+  font-size: 20px;
+}
+
+.dest-info-ios h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+}
+
+.dest-info-ios p {
+  font-size: 13px;
+  color: var(--ios-text-tertiary);
+  margin-top: 2px;
+}
+
+#mapContainer {
+  flex: 1;
+  width: 100%;
+  background: var(--ios-surface-secondary);
+}
+
+.map-footer-ios {
+  background: var(--ios-surface);
+  padding: 14px 20px calc(20px + var(--safe-bottom));
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.route-info-ios {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--ios-surface-secondary);
+  border-radius: var(--ios-r-lg);
+  margin-bottom: 14px;
+}
+
+.route-stat-ios {
+  text-align: center;
+  flex: 1;
+}
+
+.route-val-ios {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  font-feature-settings: 'tnum';
+}
+
+.route-lbl-ios {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ios-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.route-divider-ios {
+  width: 1px;
+  height: 28px;
+  background: var(--ios-separator);
+}
+
+.map-actions-ios {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-map-open-ios {
+  flex: 2;
+  padding: 15px;
+  background: var(--ios-accent);
+  color: white;
+  border: none;
+  border-radius: var(--ios-r-lg);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-map-open-ios:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.btn-arrive-ios {
+  flex: 1;
+  padding: 15px;
+  background: var(--ios-green);
+  color: white;
+  border: none;
+  border-radius: var(--ios-r-lg);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-arrive-ios:active {
+  transform: scale(0.97);
+}
+
+/* ============================================
+   SURVEY SCREEN - NO SCROLL FOR CHECKIN/FISIK
+============================================ */
+#surveyScreen {
+  background: var(--ios-bg);
+}
+
+.survey-header-ios {
+  background: var(--ios-surface);
+  padding-top: calc(var(--safe-top) + 12px);
+  padding-bottom: 0;
+  position: relative;
+  z-index: 100;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.survey-back-ios {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-accent);
+  cursor: pointer;
+  padding: 10px 0;
+  margin-left: 16px;
+}
+
+.prop-title-ios {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  padding: 0 16px 4px;
+  letter-spacing: -0.3px;
+}
+
+.prop-address-ios {
+  font-size: 13px;
+  color: var(--ios-text-tertiary);
+  padding: 0 16px 16px;
+}
+
+/* Stepper - Compact iOS Style */
+.stepper-ios {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stepper-ios::-webkit-scrollbar {
+  display: none;
+}
+
+.step-pill-ios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 13px;
+  min-width: 68px;
+  border-radius: var(--ios-r-md);
+  background: var(--ios-input);
+  color: var(--ios-text-tertiary);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  border: 1.5px solid transparent;
+}
+
+.step-pill-ios.current {
+  background: var(--ios-text-primary);
+  color: var(--ios-text-white);
+  border-color: var(--ios-text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--ios-shadow-md);
+}
+
+.step-pill-ios.done {
+  background: var(--ios-green-bg);
+  color: var(--ios-green);
+  border-color: var(--ios-green);
+}
+
+.step-num-ios {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ios-separator);
+  color: var(--ios-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.step-pill-ios.current .step-num-ios {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+.step-pill-ios.done .step-num-ios {
+  background: var(--ios-green);
+  color: white;
+}
+
+/* STEP PANELS - FIT TO SCREEN NO SCROLL */
+.step-panel-ios {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 16px calc(90px + var(--safe-bottom));
+}
+
+.step-panel-ios.show {
+  display: flex;
+  animation: iosFadeIn 0.35s ease;
+}
+
+/* CHECKIN PANEL - COMPACT FIT ONE SCREEN */
+.checkin-panel-ios {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+.checkin-icon-circle-ios {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 28px var(--gold-glow);
+}
+
+.checkin-title-ios {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  text-align: center;
+}
+
+.checkin-desc-ios {
+  font-size: 14px;
+  color: var(--ios-text-tertiary);
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.45;
+}
+
+.coords-grid-ios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.coord-cell-ios {
+  background: var(--ios-surface);
+  border: 0.5px solid var(--ios-separator);
+  border-radius: var(--ios-r-md);
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.coord-label-ios {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ios-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.coord-val-ios {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin-top: 4px;
+  font-feature-settings: 'tnum';
+}
+
+.checkin-btn-ios {
+  width: 80%;
+  max-width: 200px;
+  padding: 10px;
+  background: var(--ios-accent);
+  color: white;
+  border: none;
+  border-radius: var(--ios-r-lg);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0,122,255,0.3);
+}
+
+.checkin-btn-ios:active {
+  transform: scale(0.97);
+}
+
+.checkin-success-ios {
+  display: none;
+  width: 100%;
+  max-width: 360px;
+  padding: 14px;
+  background: var(--ios-green-bg);
+  border-radius: var(--ios-r-md);
+  color: var(--ios-green);
+  font-weight: 600;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.checkin-success-ios.visible {
+  display: flex;
+}
+
+.next-step-btn-ios {
+  width: 80%;
+  max-width: 200px;
+  padding: 1px;
+  background: var(--ios-surface);
+  color: var(--ios-accent);
+  border: 1.5px solid var(--ios-accent);
+  border-radius: var(--ios-r-lg);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.next-step-btn-ios:active {
+  transform: scale(0.97);
+  background: var(--ios-accent-bg);
+}
+
+/* FISIK PANEL - COMPACT GRID FIT ONE SCREEN */
+.fisik-panel-ios {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.form-section-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-xl);
+  padding: 10px;
+  border: 0.5px solid var(--ios-separator);
+}
+
+.form-section-title-ios {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.form-grid-ios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-grid-ios.full {
+  grid-template-columns: 1fr;
+}
+
+.field-label-ios {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-ios {
+  width: 100%;
+  padding: 10px 11px;
+  background: var(--ios-input);
+  border: 0.5px solid transparent;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ios-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-ios:focus {
+  background: var(--ios-surface);
+  border-color: var(--ios-accent);
+  box-shadow: 0 0 0 3px var(--ios-accent-bg);
+}
+
+.unit-wrap-ios {
+  position: relative;
+}
+
+.unit-wrap-ios .input-ios {
+  padding-right: 40px;
+}
+
+.unit-badge-ios {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ios-text-tertiary);
+}
+
+.checkbox-grid-ios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.checkbox-option-ios {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 11px;
+  border: 1.5px solid var(--ios-separator);
+  border-radius: var(--ios-r-md);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ios-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.checkbox-option-ios.selected {
+  border-color: var(--ios-accent);
+  background: var(--ios-accent-bg);
+  color: var(--ios-text-primary);
+  font-weight: 600;
+}
+
+.check-box-ios {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ios-separator);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.checkbox-option-ios.selected .check-box-ios {
+  background: var(--ios-accent);
+  border-color: var(--ios-accent);
+  color: white;
+}
+
+.fisik-next-btn {
+  width: 100%;
+  padding: 17px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  color: #1a1a1a;
+  border: none;
+  border-radius: var(--ios-r-lg);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  box-shadow: 0 6px 20px var(--gold-glow);
+}
+
+.fisik-next-btn:active {
+  transform: scale(0.97);
+}
+
+/* PHOTO PANEL - SCROLLABLE */
+.photo-prog-card-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-xl);
+  padding: 16px;
+  border: 0.5px solid var(--ios-separator);
+  margin-bottom: 14px;
+}
+
+.photo-prog-head-ios {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.photo-prog-title-ios {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+}
+
+.photo-count-ios {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold-primary);
+}
+
+.prog-track-ios {
+  height: 8px;
+  background: var(--ios-input);
+  border-radius: var(--ios-r-full);
+  overflow: hidden;
+}
+
+.prog-fill-ios {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ios-accent), var(--gold-primary));
+  border-radius: var(--ios-r-full);
+  transition: width 0.5s ease;
+}
+
+/* Category Cards */
+.cat-card-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-xl);
+  margin-bottom: 12px;
+  border: 0.5px solid var(--ios-separator);
+  overflow: hidden;
+}
+
+.cat-card-ios::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.cat-required::before { background: linear-gradient(180deg, var(--ios-accent), var(--ios-teal)); }
+.cat-done::before { background: linear-gradient(180deg, var(--ios-green), #30D158); }
+.cat-opt::before { background: var(--ios-text-quaternary); }
+
+.cat-header-ios {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 16px 15px 18px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+.cat-header-ios:active {
+  background: var(--ios-surface-secondary);
+}
+
+.cat-left-ios {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-num-ios {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ios-input);
+  border: 1.5px solid var(--ios-separator);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ios-text-tertiary);
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.cat-card-ios.is-done .cat-num-ios {
+  background: var(--ios-green);
+  border-color: transparent;
+  color: white;
+}
+
+.cat-name-ios {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ios-text-primary);
+}
+
+.cat-right-ios {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.note-btn-ios {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ios-separator);
+  background: var(--ios-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ios-text-tertiary);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.note-btn-ios.has-note {
+  border-color: var(--gold-primary);
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+  color: #1a1a1a;
+}
+
+.note-dot-ios {
+  display: none;
+  width: 8px;
+  height: 8px;
+  background: var(--ios-red);
+  border-radius: 50%;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  border: 2px solid var(--ios-surface);
+}
+
+.note-btn-ios.has-note .note-dot-ios {
+  display: block;
+}
+
+.status-pill-ios {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--ios-r-full);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.pill-mandatory { background: var(--ios-accent-bg); color: var(--ios-accent); }
+.pill-optional { background: var(--ios-input); color: var(--ios-text-tertiary); }
+.pill-complete { background: var(--ios-green-bg); color: var(--ios-green); }
+
+.cat-chevron-ios {
+  color: var(--ios-text-quaternary);
+  transition: transform 0.25s ease;
+  font-size: 20px;
+}
+
+.cat-card-ios.expanded .cat-chevron-ios {
+  transform: rotate(90deg);
+}
+
+.cat-body-ios {
+  display: none;
+  padding: 0 16px 16px;
+  background: var(--ios-surface-secondary);
+  border-top: 0.5px solid var(--ios-separator);
+}
+
+.cat-card-ios.expanded .cat-body-ios {
+  display: block;
+  animation: iosFadeIn 0.25s ease;
+}
+
+.tip-box-ios {
+  font-size: 12px;
+  color: var(--ios-text-secondary);
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  line-height: 1.45;
+  border-left: 3px solid var(--gold-primary);
+}
+
+.photo-zone-ios {
+  border: 2px dashed var(--ios-separator);
+  border-radius: var(--ios-r-lg);
+  background: var(--ios-surface);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.photo-zone-ios.has-img {
+  border-style: solid;
+  border-color: var(--ios-green);
+  border-width: 2px;
+}
+
+.photo-empty-ios {
+  text-align: center;
+  padding: 24px;
+}
+
+.photo-empty-icon-ios {
+  font-size: 44px;
+  color: var(--ios-text-quaternary);
+}
+
+.photo-empty-text-ios {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ios-text-tertiary);
+  margin-top: 8px;
+}
+
+.photo-empty-hint-ios {
+  font-size: 12px;
+  color: var(--ios-text-quaternary);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.preview-wrap-ios {
+  position: relative;
+  width: 100%;
+}
+
+.preview-img-ios {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-overlay-ios {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.overlay-info-ios {
+  font-size: 11px;
+  color: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.photo-btns-ios {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.photo-btn-ios {
+  flex: 1;
+  padding: 13px;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.photo-btn-ios:active {
+  transform: scale(0.96);
+}
+
+.btn-capture-ios {
+  background: var(--ios-text-primary);
+  color: var(--ios-text-white);
+}
+
+.btn-retake-ios {
+  background: var(--ios-red-bg);
+  color: var(--ios-red);
+  border: 1.5px solid rgba(255,59,48,0.2);
+}
+
+.note-preview-ios {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, var(--gold-glow), rgba(218,165,32,0.06));
+  border-radius: var(--ios-r-md);
+  font-size: 12px;
+  color: var(--gold-primary);
+  line-height: 1.5;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px solid rgba(184,134,11,0.2);
+}
+
+.note-preview-ios.visible {
+  display: flex;
+}
+
+/* SUBMIT PANEL */
+.submit-panel-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-xl);
+  padding: 18px;
+  border: 0.5px solid var(--ios-separator);
+  margin-bottom: 14px;
+}
+
+.submit-title-ios {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin-bottom: 16px;
+}
+
+.summary-row-ios {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+
+.summary-row-ios:last-child {
+  border: none;
+}
+
+.summ-icon-ios {
+  font-size: 22px;
+}
+
+.summ-text-ios {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-text-primary);
+}
+
+.summ-status-ios {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.st-ok-ios { color: var(--ios-green); }
+.st-no-ios { color: var(--ios-red); }
+
+.warning-box-ios {
+  background: var(--ios-red-bg);
+  border: 1px solid rgba(255,59,48,0.2);
+  border-radius: var(--ios-r-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--ios-red);
+  font-weight: 500;
+  line-height: 1.45;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.submit-btn-ios {
+  width: 100%;
+  padding: 17px;
+  background: var(--ios-text-primary);
+  color: var(--ios-text-white);
+  border: none;
+  border-radius: var(--ios-r-lg);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-btn-ios:disabled {
+  background: var(--ios-text-quaternary);
+  cursor: not-allowed;
+}
+
+.submit-btn-ios:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* POPUP / BOTTOM SHEET */
+.popup-overlay-ios {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 700;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.popup-overlay-ios.open {
+  display: flex;
+}
+
+.bottom-sheet-ios {
+  background: var(--ios-surface);
+  border-radius: var(--ios-r-2xl) var(--ios-r-2xl) 0 0;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px 24px calc(28px + var(--safe-bottom));
+  animation: iosSlideUp 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet-handle-ios {
+  width: 36px;
+  height: 5px;
+  background: var(--ios-separator);
+  border-radius: var(--ios-r-full);
+  margin: 0 auto 20px;
+}
+
+.sheet-title-ios {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ios-text-primary);
+  margin-bottom: 4px;
+}
+
+.sheet-sub-ios {
+  font-size: 14px;
+  color: var(--ios-text-tertiary);
+  margin-bottom: 18px;
+}
+
+.notes-textarea-ios {
+  width: 100%;
+  min-height: 120px;
+  padding: 14px;
+  background: var(--ios-input);
+  border: 0.5px solid transparent;
+  border-radius: var(--ios-r-md);
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ios-text-primary);
+  outline: none;
+  resize: none;
+  transition: all 0.2s ease;
+}
+
+.notes-textarea-ios:focus {
+  border-color: var(--ios-accent);
+  background: var(--ios-surface);
+}
+
+.char-count-ios {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ios-text-tertiary);
+  margin-top: 8px;
+}
+
+.sheet-btns-ios {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.btn-cancel-ios {
+  flex: 1;
+  padding: 15px;
+  background: var(--ios-input);
+  border: none;
+  border-radius: var(--ios-r-md);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ios-text-primary);
+  cursor: pointer;
+}
+
+.btn-save-ios {
+  flex: 2;
+  padding: 15px;
+  background: var(--ios-accent);
+  border: none;
+  border-radius: var(--ios-r-md);
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden-file-ios { display: none; }
+
+.toast-ios {
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ios-text-primary);
+  color: var(--ios-text-white);
+  padding: 14px 24px;
+  border-radius: var(--ios-r-full);
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 999;
+  pointer-events: none;
+  box-shadow: var(--ios-shadow-lg);
+  white-space: nowrap;
+}
+
+.toast-ios.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.spinner-ios {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Utility for blue in dark mode */
+[data-theme="dark"] :root {
+  --ios-blue: var(--ios-accent);
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrapper">
+    <div class="login-card-ios">
+      <div class="brand-row">
+        <div class="brand-icon-ios"><span>VP</span></div>
+        <div class="brand-name-ios">ValuPro</div>
+      </div>
+      <p class="login-subtitle-ios">Tim Lapangan Survey</p>
+      
+      <div class="input-group-ios">
+        <label class="label-ios">Email Kantor</label>
+        <input type="email" class="textfield-ios" id="emailInput" value="budi@kjpp.co.id" placeholder="nama@kjpp.co.id">
+      </div>
+      
+      <div class="input-group-ios">
+        <label class="label-ios">Kata Sandi</label>
+        <input type="password" class="textfield-ios" id="passInput" value="password123" placeholder="Masukkan password">
+      </div>
+      
+      <button class="btn-ios-primary btn-ios-gold" id="loginBtn" onclick="doLogin()">
+        Masuk ke Sistem
+        <span class="material-symbols-rounded" style="font-size: 18px;">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="homeScreen" class="screen">
+  <header class="home-header-ios">
+    <div class="header-bar">
+      <div class="user-avatar-stack">
+        <div class="avatar-ring-ios"><div class="avatar-inner-ios">BS</div></div>
+        <div class="user-meta">
+          <h1>Budi Santoso</h1>
+          <p>Surveyor Senior</p>
+        </div>
+      </div>
+      <button class="theme-toggle-ios" onclick="toggleTheme()" id="themeBtn">
+        <span class="material-symbols-rounded" id="themeIcon">dark_mode</span>
+      </button>
+    </div>
+    
+    <div class="stats-row-ios">
+      <div class="stat-card-ios"><div class="stat-value-ios">5</div><div class="stat-label-ios">Total</div></div>
+      <div class="stat-card-ios"><div class="stat-value-ios">2</div><div class="stat-label-ios">Berjalan</div></div>
+      <div class="stat-card-ios"><div class="stat-value-ios">3</div><div class="stat-label-ios">Selesai</div></div>
+    </div>
+  </header>
+  
+  <main class="main-scroll-ios">
+    <div class="section-header-ios">
+      <h2 class="section-title-ios">Penugasan Hari Ini</h2>
+      <span class="section-link-ios">Lihat Semua</span>
+    </div>
+    <div class="task-list-ios" id="taskList"></div>
+  </main>
+  
+  <nav class="tab-bar-ios">
+    <div class="tab-bar-container">
+      <div class="tab-item-ios active" onclick="switchTab('home', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">home</span>
+        <span class="tab-label-ios">Beranda</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('tasks', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">assignment</span>
+        <span class="tab-label-ios">Tugas</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('history', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">history</span>
+        <span class="tab-label-ios">Riwayat</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('profile', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">person</span>
+        <span class="tab-label-ios">Profil</span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- MAP MODAL -->
+<div class="map-modal-ios" id="mapModal">
+  <div class="map-header-ios">
+    <button class="back-btn-ios" onclick="closeMap()"><span class="material-symbols-rounded">chevron_left</span></button>
+    <div class="dest-info-ios">
+      <h3 id="mapDestName">-</h3>
+      <p id="mapDestAddr">-</p>
+    </div>
+  </div>
+  <div id="mapContainer"></div>
+  <div class="map-footer-ios">
+    <div class="route-info-ios">
+      <div class="route-stat-ios"><div class="route-val-ios" id="rDist">4.2 km</div><div class="route-lbl-ios">Jarak</div></div>
+      <div class="route-divider-ios"></div>
+      <div class="route-stat-ios"><div class="route-val-ios" id="rTime">12 mnt</div><div class="route-lbl-ios">Estimasi</div></div>
+      <div class="route-divider-ios"></div>
+      <div class="route-stat-ios"><div class="route-val-ios">Lancar</div><div class="route-lbl-ios">Traffic</div></div>
+    </div>
+    <div class="map-actions-ios">
+      <button class="btn-map-open-ios" onclick="openExternalMap()">
+        <span class="material-symbols-rounded">map</span>Buka Peta
+      </button>
+      <button class="btn-arrive-ios" onclick="markArrived()">
+        <span class="material-symbols-rounded">check_circle</span>Tiba
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SURVEY -->
+<div id="surveyScreen" class="screen">
+  <div class="survey-header-ios">
+    <div class="survey-back-ios" onclick="goHome()">
+      <span class="material-symbols-rounded" style="font-size: 18px;">chevron_left</span>Kembali
+    </div>
+    <div class="prop-title-ios" id="propTitle">-</div>
+    <div class="prop-address-ios" id="propAddr">-</div>
+    
+    <div class="stepper-ios" id="stepperEl">
+      <div class="step-pill-ios done" data-st="0" onclick="goStep(0)"><div class="step-num-ios">&#10003;</div><span>Check-in</span></div>
+      <div class="step-pill-ios done" data-st="1" onclick="goStep(1)"><div class="step-num-ios">&#10003;</div><span>Fisik</span></div>
+      <div class="step-pill-ios current" data-st="2" onclick="goStep(2)"><div class="step-num-ios">3</div><span>Foto</span></div>
+      <div class="step-pill-ios" data-st="3" onclick="goStep(3)"><div class="step-num-ios">4</div><span>Submit</span></div>
+    </div>
+  </div>
+
+  <!-- CHECKIN PANEL - NO SCROLL, FIT SCREEN -->
+  <div class="step-panel-ios show" id="panel0">
+    <div class="checkin-panel-ios">
+      <div class="checkin-icon-circle-ios">
+        <span class="material-symbols-rounded" style="font-size: 34px; color: #1a1a1a;">location_on</span>
+      </div>
+      <h2 class="checkin-title-ios">Konfirmasi Lokasi</h2>
+      <p class="checkin-desc-ios">Pastikan Anda sudah berada di lokasi properti yang akan disurvei.</p>
+      
+      <div class="coords-grid-ios">
+        <div class="coord-cell-ios"><div class="coord-label-ios">Latitude</div><div class="coord-val-ios" id="cLat">--</div></div>
+        <div class="coord-cell-ios"><div class="coord-label-ios">Longitude</div><div class="coord-val-ios" id="cLng">--</div></div>
+        <div class="coord-cell-ios"><div class="coord-label-ios">Akurasi</div><div class="coord-val-ios" id="cAcc">--</div></div>
+      </div>
+
+      <button class="checkin-btn-ios" id="checkinBtn" onclick="doCheckin()">
+        <span class="material-symbols-rounded">my_location</span>Ambil Lokasi Saat Ini
+      </button>
+      
+      <div class="checkin-success-ios" id="checkinOk">
+        <span class="material-symbols-rounded">check_circle</span>Lokasi Berhasil Dicatat
+      </div>
+      
+      <button class="next-step-btn-ios" onclick="goStep(1)">
+        Lanjut ke Data Fisik
+        <span class="material-symbols-rounded" style="font-size: 18px;">chevron_right</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- FISIK PANEL - NO SCROLL, FIT SCREEN -->
+  <div class="step-panel-ios" id="panel1">
+    <div class="fisik-panel-ios">
+      <div class="form-section-ios">
+        <div class="form-section-title-ios">Dimensi Properti</div>
+        <div class="form-grid-ios">
+          <div>
+            <label class="field-label-ios">Luas Tanah</label>
+            <div class="unit-wrap-ios"><input type="number" class="input-ios" placeholder="0"><span class="unit-badge-ios">m²</span></div>
+          </div>
+          <div>
+            <label class="field-label-ios">Luas Bangunan</label>
+            <div class="unit-wrap-ios"><input type="number" class="input-ios" placeholder="0"><span class="unit-badge-ios">m²</span></div>
+          </div>
+        </div>
+        <div class="form-grid-ios">
+          <div><label class="field-label-ios">Jumlah Lantai</label><input type="number" class="input-ios" value="1"></div>
+          <div><label class="field-label-ios">Tahun Dibangun</label><input type="number" class="input-ios" value="2010"></div>
+        </div>
+      </div>
+      
+      <div class="form-section-ios">
+        <div class="form-section-title-ios">Kondisi dan Fasilitas</div>
+        <div class="form-grid-ios full">
+          <select class="input-ios"><option>Sangat Baik</option><option selected>Cukup Baik</option><option>Kurang</option></select>
+        </div>
+        <div class="checkbox-grid-ios">
+          <div class="checkbox-option-ios selected" onclick="toggleOpt(this)"><div class="check-box-ios">&#10003;</div>Listrik PLN</div>
+          <div class="checkbox-option-ios selected" onclick="toggleOpt(this)"><div class="check-box-ios">&#10003;</div>Air PDAM</div>
+          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Garasi</div>
+          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Kolam Renang</div>
+          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Pager</div>
+          <div class="checkbox-option-ios" onclick="toggleOpt(this)"><div class="check-box-ios"></div>Taman</div>
+        </div>
+      </div>
+      
+      <button class="fisik-next-btn" onclick="goStep(2)">
+        Lanjut ke Dokumentasi Foto
+        <span class="material-symbols-rounded" style="font-size: 20px;">chevron_right</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PHOTO PANEL - SCROLLABLE -->
+  <div class="step-panel-ios" id="panel2">
+    <div class="photo-prog-card-ios">
+      <div class="photo-prog-head-ios">
+        <span class="photo-prog-title-ios">Progress Dokumentasi</span>
+        <span class="photo-count-ios" id="pCount">5 / 14</span>
+      </div>
+      <div class="prog-track-ios"><div class="prog-fill-ios" id="pBar" style="width:35%"></div></div>
+    </div>
+    <div id="catList"></div>
+    <button class="next-step-btn-ios" style="margin: 16px;" onclick="goStep(3)">
+      Lanjut ke Review dan Kirim
+      <span class="material-symbols-rounded" style="font-size: 18px;">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- SUBMIT PANEL -->
+  <div class="step-panel-ios" id="panel3">
+    <div class="submit-panel-ios">
+      <div class="submit-title-ios">Ringkasan Laporan</div>
+      <div class="summary-row-ios">
+        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--ios-green)">location_on</span>
+        <span class="summ-text-ios">Check-in GPS</span>
+        <span class="summ-status-ios st-ok-ios">OK</span>
+      </div>
+      <div class="summary-row-ios">
+        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--ios-text-primary)">straighten</span>
+        <span class="summ-text-ios">Data Fisik</span>
+        <span class="summ-status-ios st-ok-ios">OK</span>
+      </div>
+      <div class="summary-row-ios">
+        <span class="summ-icon-ios material-symbols-rounded" style="color:var(--gold-primary)">photo_camera</span>
+        <span class="summ-text-ios">Foto Wajib</span>
+        <span class="summ-status-ios st-no-ios">5/8</span>
+      </div>
+    </div>
+    <div class="warning-box-ios">
+      <span class="material-symbols-rounded">warning</span>
+      <span>Masih ada <strong>3 foto wajib</strong> yang belum diambil.</span>
+    </div>
+    <button class="submit-btn-ios" disabled>Kirim Laporan Survei</button>
+  </div>
+  
+  <!-- Tab Bar for Survey Too -->
+  <nav class="tab-bar-ios">
+    <div class="tab-bar-container">
+      <div class="tab-item-ios active" onclick="switchTab('home', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">home</span>
+        <span class="tab-label-ios">Beranda</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('tasks', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">assignment</span>
+        <span class="tab-label-ios">Tugas</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('history', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">history</span>
+        <span class="tab-label-ios">Riwayat</span>
+      </div>
+      <div class="tab-item-ios" onclick="switchTab('profile', this)">
+        <div class="tab-indicator"></div>
+        <span class="material-symbols-rounded tab-icon-ios">person</span>
+        <span class="tab-label-ios">Profil</span>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- NOTES POPUP -->
+<div class="popup-overlay-ios" id="notesPopup">
+  <div class="bottom-sheet-ios">
+    <div class="sheet-handle-ios"></div>
+    <div class="sheet-title-ios">Catatan Foto</div>
+    <div class="sheet-sub-ios" id="noteCatName">Nama Kategori</div>
+    <textarea class="notes-textarea-ios" id="noteInput" maxlength="300" placeholder="Tulis catatan detail di sini..."></textarea>
+    <div class="char-count-ios"><span id="cCnt">0</span>/300</div>
+    <div class="sheet-btns-ios">
+      <button class="btn-cancel-ios" onclick="closeNote()">Batal</button>
+      <button class="btn-save-ios" onclick="saveNote()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" accept="image/*" capture="environment" class="hidden-file-ios" id="camInput">
+<div class="toast-ios" id="toastEl"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+// DATA
+const LOCATIONS = [
+  {id:'L1',order:'ORD-0046',name:'Bpk. Hendra Wijaya',addr:'Griya Indah Blok C-5, Bekasi',type:'Rumah',dist:'4.2km',eta:'12mnt',lat:-6.2341,lng:106.9983,status:'transit',prog:35,pDone:5},
+  {id:'L2',order:'ORD-0048',name:'PT. Graha Nusantara',addr:'Jl. Raya Bogor KM.22, Depok',type:'Kantor',dist:'12km',eta:'28mnt',lat:-6.3921,lng:106.8333,status:'new',prog:0,pDone:0},
+  {id:'L3',order:'ORD-0043',name:'Ibu. Sari Dewi',addr:'Jl. Mawar No.7, Bogor',type:'Rumah',dist:'-',eta:'-',lat:-6.5950,lng:106.8167,status:'done',prog:100,pDone:14}
+];
+
+const CATEGORIES = [
+  {id:0,name:'Tampak Depan',req:true,done:true,hasNote:true,note:'Pagar sisi kiri sedikit mengelupas catnya.',img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'},
+  {id:1,name:'Tampak Belakang',req:true,done:false,expanded:true,hasNote:false},
+  {id:2,name:'Tampak Samping Kiri',req:true,done:false,hasNote:false},
+  {id:3,name:'Tampak Samping Kanan',req:true,done:false,hasNote:false},
+  {id:4,name:'Ruang Tamu',req:true,done:true,hasNote:false,img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80'},
+  {id:5,name:'Dapur',req:true,done:true,hasNote:true,note:'Kitchen set kayu lapis kondisi baik.',img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80'},
+  {id:6,name:'Kamar Utama',req:true,done:false,hasNote:false},
+  {id:7,name:'Kamar Mandi',req:true,done:false,hasNote:false},
+  {id:8,name:'Lingkungan Sekitar',req:false,done:false,hasNote:false}
+];
+
+let NOTES = {};
+let PHOTOS_DONE = {};
+CATEGORIES.forEach(c => { if(c.hasNote && c.note) NOTES[c.id]=c.note; if(c.done) PHOTOS_DONE[c.id]=true; });
+
+let curLoc = null;
+let camTarget = null;
+let noteTarget = null;
+let map = null;
+let marker = null;
+
+// INIT
+document.addEventListener('DOMContentLoaded', () => {
+  const theme = localStorage.getItem('vp_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeIcon(theme);
+  if(localStorage.getItem('vp_login') === 'yes') showScreen('home');
+  renderCards();
+  renderCats();
+  document.getElementById('camInput').addEventListener('change', handleCam);
+  document.getElementById('noteInput').addEventListener('input', () => document.getElementById('cCnt').textContent = document.getElementById('noteInput').value.length);
+  document.getElementById('notesPopup').addEventListener('click', e => { if(e.target===e.currentTarget) closeNote(); });
+});
+
+function toggleTheme() {
+  const el = document.documentElement;
+  const cur = el.getAttribute('data-theme');
+  const nxt = cur==='light'?'dark':'light';
+  el.setAttribute('data-theme', nxt);
+  localStorage.setItem('vp_theme', nxt);
+  updateThemeIcon(nxt);
+  if(map) setTimeout(()=>map.invalidateSize(), 350);
+}
+function updateThemeIcon(t) {
+  document.getElementById('themeIcon').textContent = t==='light'?'dark_mode':'light_mode';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id+'Screen');
+  if(el) el.classList.add('active');
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-item-ios').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if(tab==='home') goHome();
+  else showToast(`Menu ${tab} segera hadir`);
+}
+
+function doLogin() {
+  const b = document.getElementById('loginBtn');
+  b.innerHTML = '<span class="spinner-ios"></span> Memproses...';
+  b.disabled = true;
+  setTimeout(() => {
+    localStorage.setItem('vp_login','yes');
+    showScreen('home');
+    b.innerHTML = 'Masuk ke Sistem<span class="material-symbols-rounded" style="font-size:18px;">arrow_forward</span>';
+    b.disabled = false;
+    showToast('Selamat datang!');
+  }, 1400);
+}
+
+// CARDS
+function renderCards() {
+  const c = document.getElementById('taskList'); c.innerHTML='';
+  LOCATIONS.forEach((l,i) => {
+    const div = document.createElement('div');
+    const cfg = getStatusCfg(l.status);
+    div.className = 'task-card-ios';
+    div.style.animationDelay = (i*0.08)+'s';
+    div.innerHTML = `
+      <div class="card-body-ios">
+        <div class="status-dot-ios ${cfg.dot}"></div>
+        <div class="card-info-ios">
+          <div class="order-tag-ios">${l.order}</div>
+          <div class="client-name-ios">${l.name}</div>
+          <div class="address-ios"><span class="material-symbols-rounded" style="font-size:15px;">place</span>${l.addr}</div>
+          <div class="meta-row-ios">
+            <div class="meta-item-ios"><span class="material-symbols-rounded" style="font-size:14px;">home</span>${l.type}</div>
+            <div class="meta-item-ios"><span class="material-symbols-rounded" style="font-size:14px;">photo_camera</span>${l.pDone}/14</div>
+          </div>
+        </div>
+        <div class="status-badge-ios ${cfg.badge}">${cfg.txt}</div>
+      </div>
+      <div class="progress-bar-ios"><div class="progress-fill-ios" style="width:${l.prog}%"></div></div>
+      ${l.status!=='done'?`<div class="card-actions-ios">
+        <button class="action-btn-ios btn-nav-ios" onclick="event.stopPropagation();openMap('${l.id}')"><span class="material-symbols-rounded">navigation</span>Navigasi</button>
+        <button class="action-btn-ios btn-survey-ios" onclick="event.stopPropagation();startSurvey('${l.id}')"><span class="material-symbols-rounded">assignment</span>Survey</button>
+        <button class="action-btn-ios btn-skip-ios" onclick="event.stopPropagation();startSurvey('${l.id}')"><span class="material-symbols-rounded">skip_next</span></button>
+      </div>`:''}`;
+    if(l.status!=='done') div.onclick = () => openMap(l.id);
+    c.appendChild(div);
+  });
+}
+function getStatusCfg(s) {
+  const m={new:{dot:'dot-new',badge:'badge-new',txt:'BARU'},transit:{dot:'dot-transit',badge:'badge-transit',txt:'TRANSIT'},active:{dot:'dot-active',badge:'badge-active',txt:'SURVEY'},done:{dot:'dot-done',badge:'badge-done',txt:'SELESAI'}};
+  return m[s]||m.new;
+}
+
+// MAP
+function openMap(id) {
+  curLoc = id;
+  const l = LOCATIONS.find(x=>x.id===id);
+  if(!l) return;
+  document.getElementById('mapDestName').textContent = l.name;
+  document.getElementById('mapDestAddr').textContent = l.addr;
+  document.getElementById('rDist').textContent = l.dist;
+  document.getElementById('rTime').textContent = l.eta;
+  document.getElementById('mapModal').classList.add('visible');
+  
+  if(!map) {
+    map = L.map('mapContainer',{zoomControl:false}).setView([l.lat,l.lng],15);
+    L.control.zoom({position:'bottomright'}).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+  } else {
+    map.setView([l.lat,l.lng],15);
+  }
+  if(marker) map.removeLayer(marker);
+  const icon = L.divIcon({html:`<div style="background:#FF3B30;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 3px 8px rgba(0,0,0,0.3);"></div>`,className:'',iconSize:[24,24],iconAnchor:[12,24]});
+  marker = L.marker([l.lat,l.lng],{icon:icon}).addTo(map).bindPopup(`<b>${l.name}</b><br>${l.addr}`).openPopup();
+  const uLat=l.lat+0.008,uLng=l.lng-0.01;
+  L.polyline([[uLat,uLng],[l.lat,l.ng]],{color:'#007AFF',weight:4,opacity:0.6,dashArray:'10,8'}).addTo(map);
+  const uIcon=L.divIcon({html:`<div style="background:#007AFF;width:14px;height:14px;border-radius:50%;border:3px solid white;"></div>`,className:'',iconSize:[14,14],iconAnchor:[7,7]});
+  L.marker([uLat,uLng],{icon:uIcon}).addTo(map);
+  map.fitBounds(L.latLngBounds([[uLat,uLng],[l.lat,l.lng]]),{padding:[50,50]});
+  if(l.status==='new'){l.status='transit';renderCards();}
+}
+function closeMap(){document.getElementById('mapModal').classList.remove('visible');}
+function openExternalMap(){
+  const l=LOCATIONS.find(x=>x.id===curLoc);
+  if(l)window.open(`https://www.openstreetmap.org/?mlat=${l.lat}&mlon=${l.lng}#map=17/${l.lat}/${l.lng}`,'_blank');
+}
+function markArrived(){
+  const l=LOCATIONS.find(x=>x.id===curLoc);
+  if(l){l.status='active';closeMap();showToast('Anda tiba! Memulai survey...');setTimeout(()=>startSurvey(curLoc),900);renderCards();}
+}
+
+// SURVEY
+function startSurvey(id){
+  curLoc=id;
+  const l=LOCATIONS.find(x=>x.id===id);
+  document.getElementById('propTitle').textContent=`${l.order} · ${l.name}`;
+  document.getElementById('propAddr').textContent=l.addr;
+  showScreen('survey');
+  goStep(0);
+}
+function goHome(){showScreen('home');}
+
+function goStep(n){
+  document.querySelectorAll('.step-panel-ios').forEach((p,i)=>p.classList.toggle('show',i===n));
+  document.querySelectorAll('.step-pill-ios').forEach((t,i)=>{
+    t.classList.remove('current','done');
+    if(i<n)t.classList.add('done');
+    if(i===n)t.classList.add('current');
+  });
+}
+
+function doCheckin(){
+  const b=document.getElementById('checkinBtn');
+  b.innerHTML='<span class="spinner-ios"></span> Mendeteksi...';
+  b.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('cLat').textContent='-6.2341';
+    document.getElementById('cLng').textContent='106.9983';
+    document.getElementById('cAcc').textContent='\u00b18m';
+    b.innerHTML='<span class="material-symbols-rounded">check_circle</span>Lokasi Tercatat';
+    b.style.background='var(--ios-green)';
+    document.getElementById('checkinOk').classList.add('visible');
+    document.querySelector('[data-st="0"]').classList.add('done');
+    showToast('Check-in berhasil!');
+  },1500);
+}
+
+function toggleOpt(el){
+  el.classList.toggle('selected');
+  el.querySelector('.check-box-ios').innerHTML=el.classList.contains('selected')?'&#10003;':'';
+}
+
+// CATEGORIES
+function renderCats(){
+  const c=document.getElementById('catList');c.innerHTML='';
+  CATEGORIES.forEach(cat=>{
+    const el=document.createElement('div');
+    let cls=cat.req?'cat-required':'cat-opt';
+    let exp=cat.expanded?' expanded':'';
+    let doneCls=cat.done?' is-done cat-done':'';
+    el.className=`cat-card-ios${cls}${exp}${doneCls}`;
+    el.id='cc'+cat.id;
+    let pill='',pillTxt='';
+    if(cat.done){pill='pill-complete';pillTxt='Selesai';}
+    else if(cat.req){pill='pill-mandatory';pillTxt='Wajib';}
+    else{pill='pill-optional';pillTxt='Opsional';}
+    el.innerHTML=`
+      <div class="cat-header-ios" onclick="toggleCat(${cat.id})">
+        <div class="cat-left-ios">
+          <div class="cat-num-ios">${cat.done?'&#10003;':(cat.id+1)}</div>
+          <div class="cat-name-ios">${cat.name}</div>
+        </div>
+        <div class="cat-right-ios">
+          <div class="note-btn-ios${cat.hasNote?' has-note':''}" onclick="event.stopPropagation();openNote(${cat.id})">
+            <span class="material-symbols-rounded" style="font-size:17px;">edit</span>
+            <div class="note-dot-ios"></div>
+          </div>
+          <div class="status-pill-ios ${pill}">${pillTxt}</div>
+          <span class="material-symbols-rounded cat-chevron-ios">chevron_right</span>
+        </div>
+      </div>
+      <div class="cat-body-ios">
+        ${cat.req?`<div class="tip-box-ios"><span class="material-symbols-rounded" style="font-size:15px;vertical-align:text-bottom;">info</span>Ambil foto sudut lebar dari objek utama.</div>`:''}
+        <div class="photo-zone-ios${cat.done?' has-img':''}" id="pz${cat.id}">
+          ${cat.done?`
+            <div class="preview-wrap-ios">
+              <img src="${cat.img}" class="preview-img-ios">
+              <div class="preview-overlay-ios">
+                <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">schedule</span>09:14</span>
+                <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">gps_fixed</span>-6.234</span>
+              </div>
+            </div>
+          `:`
+            <div class="photo-empty-ios">
+              <span class="material-symbols-rounded photo-empty-icon-ios">photo_camera</span>
+              <div class="photo-empty-text-ios">Belum Ada Foto</div>
+              <div class="photo-empty-hint-ios">Kamera diperlukan</div>
+            </div>
+          `}
+        </div>
+        <div class="photo-btns-ios">
+          ${cat.done?`<button class="photo-btn-ios btn-retake-ios" onclick="triggerCam(${cat.id})"><span class="material-symbols-rounded">refresh</span>Ulang Foto</button>`
+          :`<button class="photo-btn-ios btn-capture-ios" onclick="triggerCam(${cat.id})"><span class="material-symbols-rounded">camera_alt</span>Ambil Foto</button>`}
+        </div>
+        <div class="note-preview-ios${cat.hasNote?' visible':''}" id="np${cat.id}">
+          <span class="material-symbols-rounded">edit</span><span>${cat.note||''}</span>
+        </div>
+      </div>`;
+    c.appendChild(el);
+  });
+}
+
+function toggleCat(id){document.getElementById('cc'+id).classList.toggle('expanded');}
+
+function triggerCam(id){
+  camTarget=id;
+  document.getElementById('camInput').value='';
+  document.getElementById('camInput').click();
+}
+
+function handleCam(e){
+  const f=e.target.files[0];
+  if(!f||camTarget===null)return;
+  const r=new FileReader();
+  r.onload=function(ev){
+    const id=camTarget;
+    const zone=document.getElementById('pz'+id);
+    const card=document.getElementById('cc'+id);
+    const cat=CATEGORIES.find(c=>c.id===id);
+    zone.className='photo-zone-ios has-img';
+    zone.innerHTML=`
+      <div class="preview-wrap-ios">
+        <img src="${ev.target.result}" class="preview-img-ios">
+        <div class="preview-overlay-ios">
+          <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">schedule</span>${new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>
+          <span class="overlay-info-ios"><span class="material-symbols-rounded" style="font-size:14px;">gps_fixed</span>OK</span>
+        </div>
+      </div>`;
+    card.querySelector('.photo-btns-ios').innerHTML=`<button class="photo-btn-ios btn-retake-ios" onclick="triggerCam(${id})"><span class="material-symbols-rounded">refresh</span>Ulang Foto</button>`;
+    if(cat){cat.done=true;cat.img=ev.target.result;}
+    PHOTOS_DONE[id]=true;
+    card.classList.remove('cat-required','cat-opt');
+    card.classList.add('is-done','cat-done');
+    card.querySelector('.cat-num-ios').innerHTML='&#10003;';
+    const sp=card.querySelector('.status-pill-ios');
+    sp.className='status-pill-ios pill-complete';
+    sp.textContent='Selesai';
+    updateProg();
+    showToast('Foto tersimpan!');
+  };
+  r.readAsDataURL(f);
+}
+
+function updateProg(){
+  const total=CATEGORIES.filter(c=>c.req).length;
+  const done=Object.keys(PHOTOS_DONE).filter(k=>CATEGORIES.find(c=>c.id==parseInt(k))?.req).length;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('pBar').style.width=pct+'%';
+  document.getElementById('pCount').textContent=`${done}/${total*2}`;
+}
+
+// NOTES
+function openNote(id){
+  noteTarget=id;
+  const cat=CATEGORIES.find(c=>c.id===id);
+  document.getElementById('noteCatName').textContent=cat.name;
+  const ta=document.getElementById('noteInput');
+  ta.value=NOTES[id]||'';
+  document.getElementById('cCnt').textContent=ta.value.length;
+  document.getElementById('notesPopup').classList.add('open');
+  setTimeout(()=>ta.focus(),320);
+}
+function closeNote(){document.getElementById('notesPopup').classList.remove('open');noteTarget=null;}
+function saveNote(){
+  const id=noteTarget;
+  const v=document.getElementById('noteInput').value.trim();
+  if(v){
+    NOTES[id]=v;
+    document.getElementById('cc'+id).querySelector('.note-btn-ios').classList.add('has-note');
+    const np=document.getElementById('np'+id);
+    np.lastElementChild.textContent=v;
+    np.classList.add('visible');
+  }else{
+    delete NOTES[id];
+    document.getElementById('cc'+id).querySelector('.note-btn-ios').classList.remove('has-note');
+    document.getElementById('np'+id).classList.remove('visible');
+  }
+  closeNote();
+  showToast(v?'Catatan disimpan':'Catatan dihapus');
+}
+
+function showToast(m){
+  const t=document.getElementById('toastEl');
+  t.textContent=m;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+</script>
+</body>
+</html>
